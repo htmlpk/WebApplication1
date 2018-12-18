@@ -29,7 +29,7 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User {Email = model.Email, UserName = model.Email };
+                User user = new User { Email = model.Email, UserName = model.Email };
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, "123");
                 if (result.Succeeded)
@@ -72,15 +72,15 @@ namespace WebApplication1.Controllers
                     }
                     else
                     {
-
                         return RedirectToAction("Index", "Home");
+
                     }
                 }
                 else
                 {
                     await Register(new RegisterViewModel { Email = model.Email });
-                    
-                    
+                    return RedirectToAction("Index", "Home");
+
                 }
             }
             return View(model);
