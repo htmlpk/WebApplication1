@@ -21,7 +21,6 @@ namespace UI.Controllers
         public GameController(IGameService gameService)
         {
             _gameServise = gameService;
-
         }
 
        

@@ -69,7 +69,7 @@ export class GameComponent {
   StopGame() {
     this.http.put<IMatch>(environment.apiUrl + '/api/Game/' + this.username, 0).subscribe(result => {
       this.GetGame();
-
+      this.match = result;
     }, error => console.error(error));
     this.GetGame();
 

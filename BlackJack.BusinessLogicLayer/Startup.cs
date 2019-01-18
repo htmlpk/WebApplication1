@@ -13,7 +13,7 @@ namespace BlackJack.BusinessLogicLayer
             //serviceCollection.AddTransient<IUserRepository, UserRepository>(provider => new UserRepository(connectionString));
             //serviceCollection.AddTransient<ICardRepository, CardRepository>(provider => new CardRepository(connectionString));
 
-            //// Repo EF
+            // Repo EF
             serviceCollection.AddTransient<IGameRepository, GameEFRepository>();
             serviceCollection.AddTransient<IUserRepository, UserEFRepository>();
             serviceCollection.AddTransient<ICardRepository, CardEFRepository>();
