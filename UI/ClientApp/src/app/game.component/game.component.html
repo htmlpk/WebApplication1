@@ -1,0 +1,36 @@
+
+
+<div>
+  
+  <div style="border:1px black">
+      
+    <div  [ngSwitch]="match.game.isFinished"  >
+        <div *ngSwitchCase=false>In progress</div>
+        <div *ngSwitchCase=true>Finished</div>
+      </div>
+      
+    <div style="border:1px black">Date of game - {{match.game.data | date:'dd-MM-yyyy'}}, time - {{match.game.data | date:'hh:mm'}} </div>
+    
+    </div>
+
+
+
+    <div style="text-align:center" *ngFor="let gamer of match.gamers">
+        Name - {{gamer.name}}<br>
+     Points - {{gamer.points}} points.<br>
+      Gamer status -  {{gamer.gamerStatus}}<br>
+       Is finished - {{gamer.isFinished}}<br>
+
+      
+      <div >
+        <div *ngFor="let card of match.cards">   
+        <img *ngIf="card.userInGameId==gamer.id" src= "../../assets/{{card.suit}}-{{card.value}}.png"> 
+        </div>
+      </div>
+      <button  *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.isFinished!='1')" (click)="NextRound()">Get card</button>
+      <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.isFinished!='1')" (click)="StopGame()">Enough!</button>
+    </div>
+   
+</div>
+  
+  

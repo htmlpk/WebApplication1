@@ -1,0 +1,49 @@
+<div style="text-align:center">
+
+<div   *ngFor="let match of matches">
+<div>
+|| Date of game - {{match.data | date:'yyyy-MM-dd'}}, time - {{match.data | date:'hh:mm'}} || 
+<button  (click)="GetGameDetails(match.id)">Get info</button>
+
+<div *ngIf="match.id === currentMatch.game.id">
+    <button  (click)="CloseDetails()">Hide info</button>
+    
+    <div>
+  
+        <div style="border:1px black">
+            
+          
+            
+          <div style="border:1px black">Date of game - {{currentMatch.game.data | date:'dd-MM-yyyy'}}, time - {{currentMatch.game.data | date:'hh:mm'}} </div>
+          
+          </div>
+      
+      
+      
+          <div style="text-align:center" *ngFor="let gamer of currentMatch.gamers">
+            Name - {{gamer.name}}<br>
+           Points - {{gamer.points}} points.<br>
+            Gamer status -  {{gamer.gamerStatus}}<br>
+             
+      
+            
+            
+              <div *ngFor="let card of currentMatch.cards">   
+              <img *ngIf="card.userInGameId==gamer.id" src= "../../assets/{{card.suit}}-{{card.value}}.png"> 
+              
+              </div>
+            
+            <button  *ngIf="(gamer.name.indexOf('Bot')!=0)&&(currentMatch.game.isFinished!==true)" (click)="NextRound()">Get card</button>
+            <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(currentMatch.game.isFinished!==true)" (click)="StopGame()">Enough!</button>
+          </div>
+         
+      </div>
+
+</div>
+
+    </div>
+    
+    </div>
+    <button  (click)="RedirectToMain()">Go to main</button>
+
+  </div>
