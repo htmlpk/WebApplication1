@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UI.Data;
-using UI.Data.GameRepository;
-
-using UI.Entities;
 using BlackJack.BusinessLogicLayer;
+using UI.Data.GameRepository;
 
 namespace UI.Controllers
 {
     [Route("api/[controller]")]
     public class GameController : Controller
     {
-        
+
         private IGameService _gameServise;
 
         public GameController(IGameService gameService)
@@ -23,21 +17,20 @@ namespace UI.Controllers
             _gameServise = gameService;
         }
 
-       
+
         [HttpGet("{username}")]
         public async Task<Match> Get(string username)
         {
             try
             {
-                var game = await _gameServise.GetLastMatch(username);
-                return game;
+                return await _gameServise.GetLastMatch(username); ;
             }
             catch (Exception e)
             {
 
                 throw;
             }
-           
+
         }
 
         [HttpPut("{username}")]
@@ -45,18 +38,16 @@ namespace UI.Controllers
         {
             try
             {
-                var a = await _gameServise.NextRound(username, isCardNeed);
-                return a;
+                return await _gameServise.NextRound(username, isCardNeed); ;
             }
             catch (Exception e)
             {
 
                 throw;
             }
-           
         }
 
-      
+
         [HttpDelete("{id}")]
         public async Task<Match> Delete(Guid id)
         {

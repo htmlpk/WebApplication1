@@ -1,5 +1,5 @@
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login.component/login.component';
+import { LoginComponent } from './login/login.component';
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 

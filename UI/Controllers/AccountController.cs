@@ -22,24 +22,20 @@ namespace UI.Controllers
 
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
-        private IGameService _gameServise;
+        private IGameService _gameService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGameService gameServise)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGameService gameService)
         {
-
             _userManager = userManager;
             _signInManager = signInManager;
-            _gameServise = gameServise;
+            _gameService = gameService;
         }
-
 
         [HttpGet("{username}")]
-        public async Task<List<Game>> Get(string username)
+        public async Task<IEnumerable<Game>> Get(string username)
         {
-            return await _gameServise.GetAll(username);
-
+            return await _gameService.GetAll(username);
         }
-
 
         [HttpGet]
         public IQueryable<string> Get()
@@ -47,21 +43,19 @@ namespace UI.Controllers
             return _userManager.Users.Where(item => !item.Email.Contains("Bot")).Select(item2 => item2.Email);
         }
 
-
         [HttpPut("{username}")]
         public async Task<IActionResult> Put(string username, [FromBody]int countofbots)
         {
             await Login(username);
             try
             {
-                await _gameServise.StartGame(username, countofbots);
+                await _gameService.StartGame(username, countofbots);
             }
             catch (Exception e)
             {
 
                 throw;
             }
-            
             return Ok();
         }
 
@@ -70,13 +64,8 @@ namespace UI.Controllers
 
         public async Task<IActionResult> Register(string username)
         {
-
-
             User user = new User { Email = username, UserName = username};
-            
             var result = await _userManager.CreateAsync(user, username);
-
-                       
             if (result.Succeeded)
             {
                 try
@@ -87,32 +76,23 @@ namespace UI.Controllers
                 }
                 catch (Exception e)
                 {
-
                     throw;
                 }
-
-
             }
             return Ok();
         }
 
         public async Task<IActionResult> Login(string username)
         {
-
             await LogOff();
             var result = await _signInManager.PasswordSignInAsync(username, username, false, false);
-            
-
-            
             var a = _signInManager.Context.User.Identity.Name;
             var b = HttpContext.User.Identity.Name;
-
             if (!result.Succeeded)
             {
                 await Register(username);
 
             };
-
             return Ok();
         }
 

@@ -6,7 +6,7 @@
 <button  (click)="GetGameDetails(match.id)">Get info</button>
 
 <div *ngIf="match.id === currentMatch.game.id">
-    <button  (click)="CloseDetails()">Hide info</button>
+    <button  (click)="closeDetails()">Hide info</button>
     
     <div>
   
@@ -32,9 +32,7 @@
               <img *ngIf="card.userInGameId==gamer.id" src= "../../assets/{{card.suit}}-{{card.value}}.png"> 
               
               </div>
-            
-            <button  *ngIf="(gamer.name.indexOf('Bot')!=0)&&(currentMatch.game.isFinished!==true)" (click)="NextRound()">Get card</button>
-            <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(currentMatch.game.isFinished!==true)" (click)="StopGame()">Enough!</button>
+                        
           </div>
          
       </div>
@@ -44,6 +42,6 @@
     </div>
     
     </div>
-    <button  (click)="RedirectToMain()">Go to main</button>
+    <button  (click)="eedirectToMain()">Go to main</button>
 
   </div>

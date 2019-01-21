@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlackJack.DataAcessLayer.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using UI.Data;
 using UI.Data.GameRepository;
 
@@ -54,7 +46,7 @@ namespace UI
 
 
             // [Entity Framework <=> Dapper] 
-            BlackJack.BusinessLogicLayer.Startup.Configure(services, connectionString);
+            BlackJack.BusinessLogicLayer.Startup.SetEntityFramework(services, connectionString);
             
 
             services.Configure<IdentityOptions>(options =>
@@ -89,3 +81,4 @@ namespace UI
         }
     }
 }
+

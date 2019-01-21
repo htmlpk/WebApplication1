@@ -6,9 +6,9 @@ using UI.Entities;
 
 namespace BlackJack.DataAcessLayer.Repository
 {
-    public interface ICardRepository : IBaseGuidRepository<Raund>
+    public interface ICardRepository : IBaseGuidRepository<GameRound>
     {
-        Task<List<Raund>> FindByGameId(Guid Id);
-        Task<List<Raund>> FindByUserId(Guid Id);
+        Task<IEnumerable<GameRound>> FindByGameId(Guid Id);
+        Task<IEnumerable<GameRound>> FindByUserId(Guid Id);
     }
 }

@@ -27,7 +27,7 @@ namespace UI.Entities
         [Computed]
         public virtual Game Game { get; set; }
         [Computed]
-        public virtual List<Raund> Cards { get; set; }
+        public virtual List<GameRound> Cards { get; set; }
 
     }
 }
