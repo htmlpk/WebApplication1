@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BlackJack.BusinessLogicLayer;
 using UI.Data.GameRepository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class GameController : Controller
     {
@@ -17,12 +19,15 @@ namespace UI.Controllers
             _gameServise = gameService;
         }
 
+        
+
 
         [HttpGet("{username}")]
         public async Task<Match> Get(string username)
         {
             try
             {
+               // var jwtUsername = GetIdentity(username, username).Name;
                 return await _gameServise.GetLastMatch(username); ;
             }
             catch (Exception e)
@@ -34,15 +39,14 @@ namespace UI.Controllers
         }
 
         [HttpPut("{username}")]
-        public async Task<Match> Put(string username, [FromBody] bool isCardNeed)
+        public async Task<Match> Put([FromBody] bool isCardNeed, string username = null)
         {
             try
             {
-                return await _gameServise.NextRound(username, isCardNeed); ;
+                return await _gameServise.NextRound(username, isCardNeed);
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }

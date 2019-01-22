@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using UI.Data;
 using System.Web;
 using UI.Data.GameRepository;
@@ -12,6 +13,9 @@ using UI.Entities;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.IdentityModel.Tokens.Jwt;
+using BlackJack.BusinessLogicLayer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace UI.Controllers
 {
@@ -19,6 +23,7 @@ namespace UI.Controllers
     [ApiController]
     public class AccountController : Controller
     {
+        
 
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
@@ -34,7 +39,9 @@ namespace UI.Controllers
         [HttpGet("{username}")]
         public async Task<IEnumerable<Game>> Get(string username)
         {
-            return await _gameService.GetAll(username);
+            await Login(username);
+            var jwtUsername = GetIdentity(username, username).Name;
+            return await _gameService.GetAll(jwtUsername);
         }
 
         [HttpGet]
@@ -49,7 +56,8 @@ namespace UI.Controllers
             await Login(username);
             try
             {
-                await _gameService.StartGame(username, countofbots);
+                var jwtUsername = GetIdentity(username, username).Name;
+                await _gameService.StartGame(jwtUsername, countofbots);
             }
             catch (Exception e)
             {
@@ -59,12 +67,12 @@ namespace UI.Controllers
             return Ok();
         }
 
-        
+
 
 
         public async Task<IActionResult> Register(string username)
         {
-            User user = new User { Email = username, UserName = username};
+            User user = new User { Email = username, UserName = username };
             var result = await _userManager.CreateAsync(user, username);
             if (result.Succeeded)
             {
@@ -81,19 +89,50 @@ namespace UI.Controllers
             }
             return Ok();
         }
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string username)
         {
-            await LogOff();
+
             var result = await _signInManager.PasswordSignInAsync(username, username, false, false);
-            var a = _signInManager.Context.User.Identity.Name;
-            var b = HttpContext.User.Identity.Name;
+
             if (!result.Succeeded)
             {
                 await Register(username);
 
             };
+
+            try
+            {
+                await Authenticate(username);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            
+
+            var a = User.Identity.Name;
+
             return Ok();
+        }
+
+        private ClaimsIdentity GetIdentity(string username, string password)
+        {
+            User person = _userManager.Users.FirstOrDefault(x => x.Email == username);
+            if (person != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, "User")
+                };
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+            return null;
         }
 
         private async Task Authenticate(string userName)
@@ -111,7 +150,7 @@ namespace UI.Controllers
 
         public async Task<IActionResult> LogOff()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);  
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
 

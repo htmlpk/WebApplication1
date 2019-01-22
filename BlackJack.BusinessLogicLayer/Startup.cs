@@ -14,21 +14,21 @@ namespace BlackJack.BusinessLogicLayer
         public static void SetDapper(IServiceCollection serviceCollection, string connectionString)
         {
             // Repo Dapper
-            serviceCollection.AddTransient<IGameRepository, GameRepository>(provider => new GameRepository(connectionString));
-            serviceCollection.AddTransient<IUserRepository, UserInGameRepository>(provider => new UserInGameRepository(connectionString));
-            serviceCollection.AddTransient<ICardRepository, GameRoundsRepository>(provider => new GameRoundsRepository(connectionString));
+            serviceCollection.AddScoped<IGameRepository, GameRepository>(provider => new GameRepository(connectionString));
+            serviceCollection.AddScoped<IUserRepository, UserInGameRepository>(provider => new UserInGameRepository(connectionString));
+            serviceCollection.AddScoped<ICardRepository, GameRoundsRepository>(provider => new GameRoundsRepository(connectionString));
             // Services
-            serviceCollection.AddTransient<IGameService, GameService>();
+            serviceCollection.AddScoped<IGameService, GameService>();
         }
 
         public static void SetEntityFramework(IServiceCollection serviceCollection, string connectionString)
         {
             // Repo EF
-            serviceCollection.AddTransient<IGameRepository, GameRoundsEFRepository>();
-            serviceCollection.AddTransient<IUserRepository, UserEFRepository>();
-            serviceCollection.AddTransient<ICardRepository, CardEFRepository>();
+            serviceCollection.AddScoped<IGameRepository, GameRoundsEFRepository>();
+            serviceCollection.AddScoped<IUserRepository, UserEFRepository>();
+            serviceCollection.AddScoped<ICardRepository, CardEFRepository>();
             // Services
-            serviceCollection.AddTransient<IGameService, GameService>();
+            serviceCollection.AddScoped<IGameService, GameService>();
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using BlackJack.BusinessLogicLayer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using UI.Data;
 using UI.Data.GameRepository;
 
@@ -34,10 +37,11 @@ namespace UI
             services.AddSession();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-               .AddCookie(options => //CookieAuthenticationOptions
+                .AddCookie(options => //CookieAuthenticationOptions
                 {
-                   options.LoginPath = new Microsoft.AspNetCore.Http.PathString("");
-               });
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
+
 
             services.AddMvc()
      .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -47,8 +51,6 @@ namespace UI
 
             // [Entity Framework <=> Dapper] 
             BlackJack.BusinessLogicLayer.Startup.SetEntityFramework(services, connectionString);
-            
-
             services.Configure<IdentityOptions>(options =>
             {                
                 options.Password.RequireDigit = false;
