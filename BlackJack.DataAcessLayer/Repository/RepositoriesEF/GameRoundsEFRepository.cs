@@ -12,7 +12,6 @@ namespace BlackJack.DataAcessLayer.Repository
         public GameRoundsEFRepository(ApplicationDbContext database)
             : base(database)
         {
-
         }
 
         public override async Task<Game> FindById(string id)
@@ -21,7 +20,7 @@ namespace BlackJack.DataAcessLayer.Repository
         }
         public async Task<IEnumerable<Game>> GetAll(string userName)
         {
-           return _database.Game;
+            return _database.Game.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicatonUser.Email == userName) != null).OrderByDescending(t => t.Data);
         }
        
         public async Task<Game> GetLastGame(string userName)

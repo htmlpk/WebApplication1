@@ -7,22 +7,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
     { path: '', component: HistoryComponent }
-
-
 ];
 
 @NgModule({
-
     imports: [
         CommonModule,
         RouterModule.forChild(routes)
     ],
-
     declarations: [
         HistoryComponent
     ]
-    
-
 })
 export class HistoryModule { }
 

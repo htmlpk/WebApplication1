@@ -1,13 +1,14 @@
-
 import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { RouterModule,Routes} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http'
+import { ParamInterceptor } from './shared/services/shared.interceptor';
+import { GameService } from 'src/app/shared/services/shared.gameservice';
 
 
 const routes: Routes = [
@@ -31,8 +32,11 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
         
   ],
-  
-  providers: [],
+  providers: [GameService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ParamInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

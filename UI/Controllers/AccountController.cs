@@ -1,47 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BlackJack.BusinessLogicLayer;
+using BlackJack.UI.Helpers;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using UI.Data;
-using System.Web;
-using UI.Data.GameRepository;
-using UI.Entities;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.IdentityModel.Tokens.Jwt;
-using BlackJack.BusinessLogicLayer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using UI.Data;
+using UI.Data.GameRepository;
 
 namespace UI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
-        
-
+        private readonly AppSettings _appSettings;
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private IGameService _gameService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGameService gameService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGameService gameService, IOptions<AppSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _gameService = gameService;
-        }
+            _appSettings = appSettings.Value;
 
-        [HttpGet("{username}")]
-        public async Task<IEnumerable<Game>> Get(string username)
-        {
-            await Login(username);
-            var jwtUsername = GetIdentity(username, username).Name;
-            return await _gameService.GetAll(jwtUsername);
         }
 
         [HttpGet]
@@ -50,25 +45,31 @@ namespace UI.Controllers
             return _userManager.Users.Where(item => !item.Email.Contains("Bot")).Select(item2 => item2.Email);
         }
 
-        [HttpPut("{username}")]
-        public async Task<IActionResult> Put(string username, [FromBody]int countofbots)
+        
+        [HttpGet("{username}")]
+        public async Task<string> Get(string username)
         {
-            await Login(username);
+            var userToken = await Login(username);
+            return userToken;
+        }
+        
+        [HttpPut("{username}")]
+        public async Task Put(string username)
+        {
+            var countofbots = "";
             try
             {
-                var jwtUsername = GetIdentity(username, username).Name;
-                await _gameService.StartGame(jwtUsername, countofbots);
+                using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+                {
+                    countofbots = await reader.ReadToEndAsync();
+                }
+                await _gameService.StartGame(username, int.Parse(countofbots));
             }
             catch (Exception e)
             {
-
                 throw;
             }
-            return Ok();
         }
-
-
-
 
         public async Task<IActionResult> Register(string username)
         {
@@ -79,8 +80,6 @@ namespace UI.Controllers
                 try
                 {
                     await _signInManager.SignInAsync(user, false);
-                    var name = HttpContext.User.Identity.Name;
-                    var a = _signInManager.Context.User.Identity.Name;
                 }
                 catch (Exception e)
                 {
@@ -89,43 +88,53 @@ namespace UI.Controllers
             }
             return Ok();
         }
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string username)
+        
+        public async Task<string> Login(string username)
         {
-
             var result = await _signInManager.PasswordSignInAsync(username, username, false, false);
-
             if (!result.Succeeded)
             {
                 await Register(username);
-
             };
-
-            try
-            {
-                await Authenticate(username);
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-            
-
-            var a = User.Identity.Name;
-
-            return Ok();
+            return await Token(username);
         }
 
-        private ClaimsIdentity GetIdentity(string username, string password)
+        public async Task<string> Token(string userName)
+        {           
+            var identity = GetIdentity(userName);
+            if (identity == null)
+            {
+                Response.StatusCode = 400;
+                await Response.WriteAsync("Invalid username or password.");
+                return null;
+            }
+            var now = DateTime.UtcNow;
+            // создаем JWT-токен
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var response = new
+            {
+                access_token = encodedJwt
+            };
+            Response.ContentType = "application/json";
+            var a = JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
+            return JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
+        }
+
+        private ClaimsIdentity GetIdentity(string username)
         {
-            User person = _userManager.Users.FirstOrDefault(x => x.Email == username);
-            if (person != null)
+            User user = _userManager.Users.FirstOrDefault(x => x.Email == username);
+            if (user != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, "User")
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -133,19 +142,6 @@ namespace UI.Controllers
                 return claimsIdentity;
             }
             return null;
-        }
-
-        private async Task Authenticate(string userName)
-        {
-            // создаем один claim
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         public async Task<IActionResult> LogOff()

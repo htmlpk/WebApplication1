@@ -19,7 +19,7 @@ namespace BlackJack.DataAcessLayer.Repository
 
         public async Task<IEnumerable<Game>> GetAll(string userName)
         {
-            var getAllGames = $@"Select * from {_tableName}";
+            var getAllGames = $@"Select {_tableName}.* from {_tableName} where UserInGame.GameId = Game.Id and UsernInGame.Name = {userName}";
             var allGames = await Connection.QueryAsync<Game>(getAllGames);
             return allGames.OrderByDescending(item => item.Data);
         }

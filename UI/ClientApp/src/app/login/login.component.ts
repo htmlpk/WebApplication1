@@ -18,34 +18,44 @@ export class LoginComponent implements OnInit {
   countofbots: string = '1';
   users: string[];
   username: string;
+  token: string;
 
   nomer: number;
-  constructor(private http: HttpClient, private router: Router,private loginservice:LoginService) {
-
+  constructor(private http: HttpClient, private router: Router, private loginservice: LoginService) {
   }
 
   ngOnInit() {
     this.getUsersName();
   }
 
-  getUsersName():void { 
+  getUsersName(): void {
     this.loginservice.getUsersName(this.http).subscribe(result => {
       this.users = result;
     }, error => console.error(error));
   }
 
-  login():void{
-    this.loginservice.login(this.http,this.username,this.countofbots).subscribe(() => {
-      this.router.navigate(['/game'])
+  login(): void {
+    this.loginservice.login(this.http, this.username).subscribe(result => {
+      this.token = result;
+      localStorage.setItem('token', this.token);
+      console.log(localStorage.getItem('token'));
     }, error => console.error(error));
   }
 
-  WatchHistory() {
-    this.router.navigate(['/history']);
+  startGame(): void {
+    this.login();
+    this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
+      this.router.navigate(['/game'])
+    }, error => console.error(error));;
   }
 
-
-
+  watchHistory() {
+    this.loginservice.login(this.http, this.username).subscribe(result => {
+      this.token = result;
+      localStorage.setItem('token', this.token);
+      this.router.navigate(['/history']);
+    }, error => console.error(error));
+  }
 }
 
 

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using BlackJack.BusinessLogicLayer;
-using UI.Data.GameRepository;
+﻿using BlackJack.BusinessLogicLayer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using System;
+using System.Threading.Tasks;
+using UI.Data.GameRepository;
 
 namespace UI.Controllers
 {
@@ -11,31 +12,25 @@ namespace UI.Controllers
     [Route("api/[controller]")]
     public class GameController : Controller
     {
-
-        private IGameService _gameServise;
+        private IGameService _gameService;
 
         public GameController(IGameService gameService)
         {
-            _gameServise = gameService;
+            _gameService = gameService;
         }
 
-        
-
-
-        [HttpGet("{username}")]
-        public async Task<Match> Get(string username)
+        [Authorize]
+        [HttpGet("{user}")]
+        public async Task<Match> Get(string user)
         {
             try
             {
-               // var jwtUsername = GetIdentity(username, username).Name;
-                return await _gameServise.GetLastMatch(username); ;
+                return await _gameService.GetLastMatch(User.Identity.Name);
             }
             catch (Exception e)
             {
-
                 throw;
             }
-
         }
 
         [HttpPut("{username}")]
@@ -43,7 +38,7 @@ namespace UI.Controllers
         {
             try
             {
-                return await _gameServise.NextRound(username, isCardNeed);
+                return await _gameService.NextRound(User.Identity.Name, isCardNeed);
             }
             catch (Exception e)
             {
@@ -51,14 +46,11 @@ namespace UI.Controllers
             }
         }
 
-
         [HttpDelete("{id}")]
         public async Task<Match> Delete(Guid id)
         {
-            var match = await _gameServise.GetMatchById(id);
+            var match = await _gameService.GetMatchById(id);
             return match;
         }
-
-
     }
 }
