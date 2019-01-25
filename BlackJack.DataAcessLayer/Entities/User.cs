@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using UI.Entities;
 
-namespace UI.Data
+namespace BlackJack.DataAcessLayer.Entities
 {
     public class User:IdentityUser
     {

@@ -1,14 +1,14 @@
-﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.BusinessLogicLayer.Handlers;
-using BlackJack.DataAcessLayer.Data;
+﻿using BlackJack.BusinessLogicLayer.CardData;
+using BlackJack.DataAcessLayer.Entities;
 using BlackJack.DataAcessLayer.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UI.Entities;
+using BlackJack.DataAcessLayer.Entities;
 
-namespace UI.Data.GameRepository
+
+namespace BlackJack.BusinessLogicLayer.Services
 {
 
     public class GameService : IGameService
@@ -124,7 +124,7 @@ namespace UI.Data.GameRepository
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
             var cards = await _cardRepository.FindByGameId(game.Id);
-            var match = new Match() { Game = game, Gamers = gamers.ToList(), Cards = cards };
+            var match = new Match() { Game = game, Gamers = gamers, Cards = cards };
             return match;
         }
 

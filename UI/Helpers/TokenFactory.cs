@@ -1,13 +1,11 @@
-﻿using BlackJack.BusinessLogicLayer;
+﻿using BlackJack.DataAcessLayer.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UI.Data;
 
 namespace BlackJack.UI.Helpers
 {

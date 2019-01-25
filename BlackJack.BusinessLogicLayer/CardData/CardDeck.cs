@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BlackJack.BusinessLogicLayer.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BlackJack.DataAcessLayer.Data
+namespace BlackJack.BusinessLogicLayer.CardData
 {
     public class CardDeck
     {

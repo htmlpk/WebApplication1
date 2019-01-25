@@ -1,9 +1,8 @@
-﻿using BlackJack.DataAcessLayer;
-using Dapper.Contrib.Extensions;
+﻿using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
 
-namespace UI.Entities
+namespace BlackJack.DataAcessLayer.Entities
 {
     [Table("Game")]
     public class Game : BasedEntity

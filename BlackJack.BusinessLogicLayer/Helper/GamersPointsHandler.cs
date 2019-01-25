@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UI.Entities;
+﻿using BlackJack.DataAcessLayer.Entities;
+using System.Collections.Generic;
 
-namespace BlackJack.BusinessLogicLayer.Handlers
+namespace BlackJack.BusinessLogicLayer
 {
     class GamersPointsHandler
     {

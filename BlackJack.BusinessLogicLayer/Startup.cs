@@ -1,6 +1,6 @@
-﻿using BlackJack.DataAcessLayer.Repository;
+﻿using BlackJack.BusinessLogicLayer.Services;
+using BlackJack.DataAcessLayer.Repository;
 using Microsoft.Extensions.DependencyInjection;
-using UI.Data.GameRepository;
 
 namespace BlackJack.BusinessLogicLayer
 {

@@ -1,17 +1,15 @@
-﻿using BlackJack.DataAcessLayer;
-using Dapper.Contrib.Extensions;
+﻿using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
-using UI.Data;
 
-namespace UI.Entities
+namespace BlackJack.DataAcessLayer.Entities
 {
     [Table("UserInGame")]
     public class UserInGame : BasedEntity
     {
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
         public string UserId{ get; set; }
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("ID")]
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
         public Guid GameId { get; set; }
         public string Name { get; set; }
         public bool IsDealer { get; set; }

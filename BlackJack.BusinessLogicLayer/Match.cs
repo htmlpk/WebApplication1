@@ -1,7 +1,5 @@
-﻿using System;
+﻿using BlackJack.DataAcessLayer.Entities;
 using System.Collections.Generic;
-using System.Text;
-using UI.Entities;
 
 namespace BlackJack.BusinessLogicLayer
 {

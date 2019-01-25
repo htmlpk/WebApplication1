@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlackJack.DataAcessLayer.Data
+namespace BlackJack.BusinessLogicLayer.CardData
 {
     public class Card
     {

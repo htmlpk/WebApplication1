@@ -1,7 +1,7 @@
-﻿using BlackJack.DataAcessLayer.BaseRepository;
+﻿using BlackJack.DataAcessLayer.Context;
+using BlackJack.DataAcessLayer.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UI.Data;
 
 namespace BlackJack.DataAcessLayer.Repository
 {

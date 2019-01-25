@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using BlackJack.DataAcessLayer.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlackJack.DataAcessLayer.BaseRepository
+namespace BlackJack.DataAcessLayer.Repository
 {
     public interface IBaseGuidRepository<T> where T : BasedEntity
     {

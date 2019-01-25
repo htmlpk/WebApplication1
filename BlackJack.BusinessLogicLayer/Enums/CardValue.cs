@@ -1,4 +1,4 @@
-﻿namespace BlackJack.DataAcessLayer.Data
+﻿namespace BlackJack.BusinessLogicLayer.Enums
 {
     public enum CardValue
     {

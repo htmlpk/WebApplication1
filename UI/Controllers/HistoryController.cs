@@ -1,15 +1,13 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using Microsoft.AspNetCore.Authorization;
+using BlackJack.DataAcessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UI.Data.GameRepository;
-using UI.Entities;
 
 namespace BlackJack.UI.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
     public class HistoryController : Controller

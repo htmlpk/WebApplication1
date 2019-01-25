@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using UI.Data.GameRepository;
 
-namespace UI.Controllers
+namespace BlackJack.UI.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

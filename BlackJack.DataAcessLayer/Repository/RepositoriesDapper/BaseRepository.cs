@@ -1,4 +1,4 @@
-﻿using BlackJack.DataAcessLayer.BaseRepository;
+﻿using BlackJack.DataAcessLayer.Entities;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;

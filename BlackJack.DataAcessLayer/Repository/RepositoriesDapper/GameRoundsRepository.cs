@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UI.Entities;
+﻿using BlackJack.DataAcessLayer.Entities;
 using Dapper;
-using Dapper.Contrib.Extensions;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlackJack.DataAcessLayer.Repository

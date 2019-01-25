@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace BlackJack.BusinessLogicLayer
+namespace BlackJack.UI
 {
     public class AuthOptions
     {

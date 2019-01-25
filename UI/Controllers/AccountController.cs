@@ -1,7 +1,6 @@
 ﻿using BlackJack.BusinessLogicLayer;
+using BlackJack.DataAcessLayer.Entities;
 using BlackJack.UI.Helpers;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +15,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UI.Data;
-using UI.Data.GameRepository;
 
-namespace UI.Controllers
+namespace BlackJack.UI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

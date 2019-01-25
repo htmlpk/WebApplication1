@@ -1,10 +1,9 @@
-﻿using BlackJack.BusinessLogicLayer;
+﻿using BlackJack.DataAcessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UI.Entities;
 
-namespace UI.Data.GameRepository
+namespace BlackJack.BusinessLogicLayer
 {
     public interface IGameService
     {

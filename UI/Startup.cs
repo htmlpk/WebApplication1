@@ -1,4 +1,7 @@
 ﻿using BlackJack.BusinessLogicLayer;
+using BlackJack.DataAcessLayer.Context;
+using BlackJack.DataAcessLayer.Entities;
+using BlackJack.UI;
 using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -12,8 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using UI.Data;
-using UI.Data.GameRepository;
 
 namespace UI
 {
