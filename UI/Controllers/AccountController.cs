@@ -36,7 +36,6 @@ namespace UI.Controllers
             _signInManager = signInManager;
             _gameService = gameService;
             _appSettings = appSettings.Value;
-
         }
 
         [HttpGet]
@@ -96,10 +95,12 @@ namespace UI.Controllers
             {
                 await Register(username);
             };
-            return await Token(username);
+            User user = _userManager.Users.FirstOrDefault(x => x.Email == username);
+            var tokenFactory = new TokenFactory();
+            return await GetToken(username);
         }
 
-        public async Task<string> Token(string userName)
+        private async Task<string> GetToken(string userName)
         {           
             var identity = GetIdentity(userName);
             if (identity == null)
@@ -126,7 +127,6 @@ namespace UI.Controllers
             var a = JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
             return JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
         }
-
         private ClaimsIdentity GetIdentity(string username)
         {
             User user = _userManager.Users.FirstOrDefault(x => x.Email == username);
@@ -143,13 +143,6 @@ namespace UI.Controllers
             }
             return null;
         }
-
-        public async Task<IActionResult> LogOff()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok();
-        }
-
     }
 
 

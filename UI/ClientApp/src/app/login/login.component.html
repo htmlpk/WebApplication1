@@ -4,10 +4,9 @@
 <datalist id="usernames">
     <option *ngFor="let user of users" [ngValue]="user.userName">{{user}}</option>
 </datalist>
-<div [hidden]="name.valid || name.untouched" class="alert alert-danger">
+<div [hidden]="name.valid || name.untouched " class="alert alert-danger">
   Enter the name
 </div><br><br>  
-
 
 <select [(ngModel)]="countofbots"  required>
     <option >1</option>
@@ -17,14 +16,7 @@
     <option >5</option>
 </select>
 
-
-
-
 <h2>
-  
-   
   <button [disabled]="name.invalid" (click)="startGame()">Start game</button>
-
   <button [disabled]="name.invalid" (click)="watchHistory()">Watch game history</button>
-  
 </h2>

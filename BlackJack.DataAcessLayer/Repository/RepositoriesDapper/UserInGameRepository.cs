@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using UI.Entities;
-using Dapper;
-using Dapper.Contrib.Extensions;
-using System.Linq;
 using System.Threading.Tasks;
+using UI.Entities;
 
 namespace BlackJack.DataAcessLayer.Repository
 {
@@ -35,9 +32,5 @@ namespace BlackJack.DataAcessLayer.Repository
             var result = await Connection.QueryAsync<UserInGame>($"SELECT * FROM {_tableName} WHERE GameId='{id}'");
             return result;
         }
-
-
-
-
     }
 }

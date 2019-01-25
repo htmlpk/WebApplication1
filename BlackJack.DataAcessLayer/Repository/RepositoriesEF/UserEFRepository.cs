@@ -37,9 +37,5 @@ namespace BlackJack.DataAcessLayer.Repository
             var lastgame = _database.UserInGame.Where(item => item.GameId == id);
             return lastgame;
         }
-
-
-
-
     }
 }

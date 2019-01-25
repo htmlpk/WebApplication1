@@ -27,7 +27,5 @@ namespace BlackJack.DataAcessLayer.Repository
         {
             return _database.Game.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicatonUser.Email == userName) != null).OrderByDescending(t => t.Data).FirstOrDefault();
         }
-
-
     }
 }

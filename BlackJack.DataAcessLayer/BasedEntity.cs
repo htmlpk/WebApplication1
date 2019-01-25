@@ -12,7 +12,5 @@ namespace BlackJack.DataAcessLayer
         {
             this.Id = Guid.NewGuid();
         }
-
-       
     }
 }

@@ -18,7 +18,6 @@ namespace BlackJack.DataAcessLayer.Data
         {
             var value = Enum.GetValues(typeof(CardValue)).Cast<CardValue>().ToList();
             var suits = Enum.GetValues(typeof(CardSuit)).Cast<CardSuit>().ToList();
-
             suits.ForEach(suit =>
                 value.ForEach(rank =>
                 _cards.Add(new Card(
@@ -27,7 +26,6 @@ namespace BlackJack.DataAcessLayer.Data
                    )
                 ))
                 );
-
             if (shuffled)
                 Shuffle();
         }
@@ -42,12 +40,9 @@ namespace BlackJack.DataAcessLayer.Data
             if (!_cards.Any())
                 throw new InvalidOperationException("Deck is out of cards");
             List<Card> unuserCards = _cards.Except(usedCards).ToList();
-            var card = unuserCards.ElementAt(0);
+            Card card = unuserCards.ElementAt(0);
             usedCards.Add(card);
             return card;
         }
-
-
-
     }
 }

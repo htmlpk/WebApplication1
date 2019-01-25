@@ -13,13 +13,10 @@ namespace UI.Data.GameRepository
 
     public class GameService : IGameService
     {
-
-        const int CountOfStartCards = 2;
-
+        private const int CountOfStartCards = 2;
         private IGameRepository _gameRepository;
         private IUserRepository _userRepository;
         private ICardRepository _cardRepository;
-
         public string ConnectionString { get; set; }
 
         public GameService(IGameRepository gameRepository, IUserRepository userRepository, ICardRepository cardRepository)
@@ -56,10 +53,8 @@ namespace UI.Data.GameRepository
         {
             List<UserInGame> gamers = new List<UserInGame>();
             List<GameRound> cards = new List<GameRound>();
-
             string userId = await _userRepository.GetUserId(userName);
             List<string> botsIds = (await _userRepository.GetBotsIds()).ToList();
-
             for (var i = 0; i <= countOfBots; i++)
             {
                 if (i == 0)
@@ -79,7 +74,6 @@ namespace UI.Data.GameRepository
                 }
             }
             await _userRepository.Add(gamers);
-
             return gamers;
         }
 
@@ -87,7 +81,6 @@ namespace UI.Data.GameRepository
         {
             List<Card> usedCards = new List<Card>();
             List<GameRound> cardsToAdd = new List<GameRound>();
-
             var gamers = await _userRepository.FindByGameId(gameId);
             foreach (var gamer in gamers)
             {
@@ -112,7 +105,6 @@ namespace UI.Data.GameRepository
             var gamers = await _userRepository.FindByGameId(gameId);
             var cards = await _cardRepository.FindByGameId(gameId);
             List<UserInGame> gamersToUpdate = new List<UserInGame>();
-
             foreach (var gamer in gamers)
             {
                 var gamerLastPoints = gamer.Points;
@@ -127,7 +119,6 @@ namespace UI.Data.GameRepository
             await _userRepository.Update(gamersToUpdate);
         }
 
-
         public async Task<Match> GetLastMatch(string userName)
         {
             var game = await _gameRepository.GetLastGame(userName);
@@ -137,15 +128,12 @@ namespace UI.Data.GameRepository
             return match;
         }
 
-
         public async Task<Match> NextRound(string userName, bool isUserNeedCard)
         {
             var lastMatch = await GetLastMatch(userName);
             var raunds = await _cardRepository.FindByGameId(lastMatch.Game.Id);
             var cardsToAdd = new List<GameRound>();
-
             List<Card> usedCards = MapRaundToCard(raunds);
-
             foreach (var gamer in lastMatch.Gamers)
             {
                 if ((gamer.Name.Contains("Bot")) && (!gamer.IsFinished))
@@ -170,13 +158,11 @@ namespace UI.Data.GameRepository
             await UpdateUsersPoints(lastMatch.Game.Id);
             await UpdateGameStatus(userName);
             await UpdateUsersStatus(userName);
-
             if ((!isUserNeedCard) && (!lastMatch.Game.IsFinished))
             {
                 await NextRound(userName, false);
                 lastMatch = await GetLastMatch(userName);
             }
-
             return await GetLastMatch(userName);
         }
 
@@ -196,9 +182,7 @@ namespace UI.Data.GameRepository
             bool isGameChanged = false;
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
-
             var countOfFinished = gamers.Where(data => data.IsFinished).Count();
-
             if (gamers.Where(data => !data.Name.Contains("Bot")).Select(data => data.IsFinished).First())
             {
                 isGameChanged = true;
@@ -215,40 +199,28 @@ namespace UI.Data.GameRepository
             }
         }
 
-
         public async Task UpdateUsersStatus(string userName)
         {
             bool isUsersChanged = false;
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
-
             var dealerStatus = gamers.Where(data => data.IsDealer).Select(data => data.GamerStatus).First();
             var dealerPoints = gamers.Where(data => data.IsDealer).Select(data => data.Points).First();
             var maxGamerPoints = gamers.Select(data => data.Points).Where(data => data <= 21).Max();
-
             var handler = new GamersPointsHandler(gamers, dealerPoints, dealerStatus, maxGamerPoints);
             var usersToUpdate = new List<UserInGame>();
 
-            switch (game.IsFinished)
+            if ((game.IsFinished)&&(dealerStatus.Equals("loser")))
             {
-                // Game is finished
-                case true:
-                    switch (dealerStatus)
-                    {
-                        case "loser":
-                            handler.GameFinishedDealerlooser(ref usersToUpdate, ref isUsersChanged, gamers);
-                            break;
-
-                        default:
-                            handler.GameFinishedDealerNotlooser(ref usersToUpdate, ref isUsersChanged, gamers);
-                            break;
-                    }
-                    break;
-
-                // Game is not finished
-                default:
-                    handler.GameNotFinished(ref usersToUpdate, ref isUsersChanged, gamers);
-                    break;
+                handler.GameFinishedDealerlooser(ref usersToUpdate, ref isUsersChanged, gamers);
+            }
+            if ((game.IsFinished) && (!dealerStatus.Equals("loser")))
+            {
+                handler.GameFinishedDealerNotlooser(ref usersToUpdate, ref isUsersChanged, gamers);
+            }
+            if (!game.IsFinished)
+            {
+                handler.GameNotFinished(ref usersToUpdate, ref isUsersChanged, gamers);
             }
 
             if (isUsersChanged)
@@ -256,7 +228,6 @@ namespace UI.Data.GameRepository
                 await _userRepository.Update(usersToUpdate);
                 await UpdateGameStatus(userName);
             }
-
         }
 
         public async Task<Match> GetMatchById(Guid id)

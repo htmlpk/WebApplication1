@@ -15,8 +15,6 @@ using System.Text;
 using UI.Data;
 using UI.Data.GameRepository;
 
-
-
 namespace UI
 {
     public class Startup
@@ -40,7 +38,6 @@ namespace UI
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
@@ -53,27 +50,16 @@ namespace UI
                         options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
                             ValidateIssuer = true,
-                            // строка, представляющая издателя
                             ValidIssuer = AuthOptions.ISSUER,
-
-                            // будет ли валидироваться потребитель токена
                             ValidateAudience = true,
-                            // установка потребителя токена
                             ValidAudience = AuthOptions.AUDIENCE,
-                            // будет ли валидироваться время существования
                             ValidateLifetime = true,
-
-                            // установка ключа безопасности
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                            // валидация ключа безопасности
                             ValidateIssuerSigningKey = true,
                         };
                         options.SaveToken = true;
                     });
-
-
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddMvc()
@@ -97,22 +83,16 @@ namespace UI
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IGameService gameService)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseSession();
-            
             app.UseDefaultFiles(); 
             app.UseStaticFiles(); 
-
             app.UseCors(builder => builder.WithOrigins(Environment.localApiUrl)); 
             app.UseAuthentication();
             app.UseMvc();
-           
-
-
         }
     }
 }

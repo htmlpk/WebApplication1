@@ -1,5 +1,4 @@
-﻿
-using BlackJack.DataAcessLayer.BaseRepository;
+﻿using BlackJack.DataAcessLayer.BaseRepository;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BlackJack.DataAcessLayer.Repository
@@ -16,8 +14,8 @@ namespace BlackJack.DataAcessLayer.Repository
     public abstract class BaseRepository<T> : IBaseGuidRepository<T> where T : BasedEntity
     {
         private string _connectionString;
-        protected readonly string _tableName;
         private IDbConnection _connection;
+        protected readonly string _tableName;
 
         protected IDbConnection Connection
         {

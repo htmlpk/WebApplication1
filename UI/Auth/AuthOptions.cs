@@ -7,7 +7,7 @@ namespace BlackJack.BusinessLogicLayer
     {
         public const string ISSUER = "MyAuthServer";
         public const string AUDIENCE = "http://localhost:4200/"; 
-        const string KEY = "mysupersecret_secretkey!123";  
+        public const string KEY = "mysupersecret_secretkey!123";  
         public const int LIFETIME = 1; 
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {

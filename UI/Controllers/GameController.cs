@@ -1,7 +1,6 @@
 ﻿using BlackJack.BusinessLogicLayer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading.Tasks;
 using UI.Data.GameRepository;

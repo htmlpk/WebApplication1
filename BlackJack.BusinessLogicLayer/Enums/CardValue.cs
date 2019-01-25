@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlackJack.DataAcessLayer.Data
+﻿namespace BlackJack.DataAcessLayer.Data
 {
     public enum CardValue
     {
+        None = 0,       
         Ace = 1,
         Two = 2,
         Three = 3,

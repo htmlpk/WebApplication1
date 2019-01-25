@@ -8,7 +8,6 @@ namespace BlackJack.BusinessLogicLayer
     {
         public static void Configure(IServiceCollection serviceCollection,string connectionString)
         {
-                     
         }
 
         public static void SetDapper(IServiceCollection serviceCollection, string connectionString)

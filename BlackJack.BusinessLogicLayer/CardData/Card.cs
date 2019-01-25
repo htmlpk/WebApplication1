@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BlackJack.DataAcessLayer.Data
 {
@@ -17,54 +13,63 @@ namespace BlackJack.DataAcessLayer.Data
         {
             this.Value = value;
             this.Suit = suit;
-            switch (value)
+            if (value.Equals("One"))
             {
-                case "One":
-                    this.Points = 1;
-                    break;
-                case "Two":
-                    this.Points = 2;
-                    break;
-                case "Three":
-                    this.Points = 3;
-                    break;
-                case "Four":
-                    this.Points = 4;
-                    break;
-                case "Five":
-                    this.Points = 5;
-                    break;
-                case "Six":
-                    this.Points = 6;
-                    break;
-                case "Seven":
-                    this.Points = 7;
-                    break;
-                case "Eight":
-                    this.Points = 8;
-                    break;
-                case "Nine":
-                    this.Points = 9;
-                    break;
-                case "Ace":
-                    this.Points = 11;
-                    break;
-
-                default:
-                    this.Points = 10;
-                    break;
+                Points = 1;
+                return;
             }
+            if (value.Equals("Two"))
+            {
+                Points = 2;
+                return;
+            }
+            if (value.Equals("Three"))
+            {
+                Points = 3;
+                return;
+            }
+            if (value.Equals("Four"))
+            {
+                Points = 4;
+                return;
+            }
+            if (value.Equals("Five"))
+            {
+                Points = 5;
+                return;
+            }
+            if (value.Equals("Six"))
+            {
+                Points = 6;
+                return;
+            }
+            if (value.Equals("Seven"))
+            {
+                Points = 7;
+                return;
+            }
+            if (value.Equals("Eight"))
+            {
+                Points = 8;
+                return;
+            }
+            if (value.Equals("Nine"))
+            {
+                Points = 9;
+                return;
+            }
+            if (value.Equals("Ace"))
+            {
+                Points = 11;
+                return;
+            }
+            Points = 10;
         }
 
         public override int GetHashCode() =>
             this.Suit.GetHashCode() ^
             this.Value.GetHashCode() ^
             this.Points.GetHashCode();
-
-        protected static bool EqualsHelper(Card first, Card second) =>
-            first.Suit == second.Suit &&
-            first.Value == second.Value &&
-            first.Points == second.Points;
 
         public override bool Equals(object obj)
         {
@@ -75,5 +80,9 @@ namespace BlackJack.DataAcessLayer.Data
                 return false;
             return EqualsHelper(this, other);
         }
+        protected static bool EqualsHelper(Card first, Card second) =>
+            first.Suit == second.Suit &&
+            first.Value == second.Value &&
+            first.Points == second.Points;
     }
 }

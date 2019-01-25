@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlackJack.DataAcessLayer.Data
+﻿namespace BlackJack.DataAcessLayer.Data
 {
     public enum CardSuit
     {
+        None = 0,
         Peak = 1,
         Diamond = 2,
         Heart = 3,

@@ -1,8 +1,6 @@
-import { environment } from 'src/environments/environment.local';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginService } from 'src/app/shared/services/shared.loginservice';
-
 import { Router } from '@angular/router';
 
 
@@ -28,28 +26,28 @@ export class LoginComponent implements OnInit {
     this.getUsersName();
   }
 
-  getUsersName(): void {
+  public getUsersName(): void {
     this.loginservice.getUsersName(this.http).subscribe(result => {
       this.users = result;
     }, error => console.error(error));
   }
 
-  login(): void {
+  public login(): void {
     this.loginservice.login(this.http, this.username).subscribe(result => {
-      this.token = result;
       localStorage.setItem('token', this.token);
+      this.token = result;
       console.log(localStorage.getItem('token'));
     }, error => console.error(error));
   }
 
-  startGame(): void {
+  public startGame(): void {
     this.login();
     this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
       this.router.navigate(['/game'])
     }, error => console.error(error));;
   }
 
-  watchHistory() {
+  public watchHistory(): void {
     this.loginservice.login(this.http, this.username).subscribe(result => {
       this.token = result;
       localStorage.setItem('token', this.token);

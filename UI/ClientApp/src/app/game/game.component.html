@@ -1,66 +1,28 @@
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-2">
-      diler
-
-    </div>
-
-  </div>
-  <div class="row justify-content-md-center">
-   
-   
-    <div class="col col-lg-2">
-   place for players
-    </div>
-   
-  </div>
-
-</div>
-
-
 <div>
-
   <div style="border:1px black">
-
     <div [ngSwitch]="match.game.isFinished">
       <div *ngSwitchCase=false>In progress</div>
       <div *ngSwitchCase=true>Finished</div>
     </div>
-
     <div style="border:1px black">Date of game - {{match.game.data | date:'dd-MM-yyyy'}}, time - {{match.game.data |
       date:'hh:mm'}} </div>
-
   </div>
-
-
-
   <div style="text-align:center" *ngFor="let gamer of match.gamers">
     Name - {{gamer.name}}<br>
-    Points - {{gamer.points}} points.<br>
-    Gamer status - {{gamer.gamerStatus}}<br>
-    Is finished - {{gamer.isFinished}}<br>
-
-
-    <!-- <div >
-        <div *ngFor="let card of match.cards">   
-        <img *ngIf="card.userInGameId==gamer.id" src= "../../assets/{{card.suit}}-{{card.value}}.png"> 
-       
-        </div>
-      </div> -->
-
+    <div *ngIf="match.game.isFinished==true||gamer.name.indexOf('Bot')!=0">
+      Points - {{gamer.points}} points.<br>
+      Gamer status - {{gamer.gamerStatus}}<br>
+    </div>
     <div>
       <div *ngFor="let card of match.cards">
         <div *ngIf="card.userInGameId==gamer.id">
           <img *ngIf="match.game.isFinished==true" src="../../assets/{{card.suit}}-{{card.value}}.png">
-
           <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')!=0" src="../../assets/{{card.suit}}-{{card.value}}.png">
           <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')==0" src="../../assets/untitled.png">
         </div>
       </div>
     </div>
-
     <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.isFinished!='1')" (click)="nextRound()">Get card</button>
     <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.isFinished!='1')" (click)="stopGame()">Enough!</button>
   </div>
-
 </div>

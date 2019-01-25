@@ -2,7 +2,6 @@
 using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
-using UI.Data;
 
 namespace UI.Entities
 {
@@ -14,8 +13,5 @@ namespace UI.Entities
         public int CountOfRounds { get; set; }
         [Computed]
         public virtual List<UserInGame> UserInGame { get; set; }
-
-
-
     }
 }

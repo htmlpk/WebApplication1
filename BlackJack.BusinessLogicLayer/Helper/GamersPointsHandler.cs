@@ -6,19 +6,18 @@ namespace BlackJack.BusinessLogicLayer.Handlers
 {
     class GamersPointsHandler
     {
-        const int PointsToLoose = 22;
-        const int PointsToFinish = 17;
-        const int PointsToBlackJack = 21;
+        private const int PointsToLoose = 22;
+        private const int PointsToFinish = 17;
+        private const int PointsToBlackJack = 21;
+        private int _dealerPoints = 0;
+        private string _dealerStatus = null;
+        private int _maxGamerPoints = 0;
 
-        int dealerPoints = 0;
-        string dealerStatus = null;
-        int maxGamerPoints = 0;
-
-        public GamersPointsHandler(IEnumerable<UserInGame> gamers, int dealerPoints, string dealerStatus,int maxGamerPoints)
+        public GamersPointsHandler(IEnumerable<UserInGame> gamers, int dealerPoints, string dealerStatus, int maxGamerPoints)
         {
-            this.dealerPoints = dealerPoints;
-            this.dealerStatus = dealerStatus;
-            this.maxGamerPoints = maxGamerPoints;
+            _dealerPoints = dealerPoints;
+            _dealerStatus = dealerStatus;
+            _maxGamerPoints = maxGamerPoints;
         }
 
         public void GameNotFinished(ref List<UserInGame> usersToUpdate, ref bool isUsersChanged, IEnumerable<UserInGame> gamers)
@@ -56,7 +55,7 @@ namespace BlackJack.BusinessLogicLayer.Handlers
         {
             foreach (var gamer in gamers)
             {
-                if ((gamer.Points < maxGamerPoints) &&
+                if ((gamer.Points < _maxGamerPoints) &&
                     (gamer.GamerStatus != "loser"))
                 {
                     gamer.IsFinished = true;
@@ -64,7 +63,7 @@ namespace BlackJack.BusinessLogicLayer.Handlers
                     usersToUpdate.Add(gamer);
                     isUsersChanged = true;
                 }
-                if ((gamer.Points == maxGamerPoints) &&
+                if ((gamer.Points == _maxGamerPoints) &&
                         gamer.GamerStatus != "winner")
                 {
                     gamer.IsFinished = true;
@@ -80,7 +79,6 @@ namespace BlackJack.BusinessLogicLayer.Handlers
                     usersToUpdate.Add(gamer);
                     isUsersChanged = true;
                 }
-
             }
         }
 
@@ -88,7 +86,7 @@ namespace BlackJack.BusinessLogicLayer.Handlers
         {
             foreach (var gamer in gamers)
             {
-                if ((gamer.Points < maxGamerPoints) &&
+                if ((gamer.Points < _maxGamerPoints) &&
                 (gamer.GamerStatus != "loser"))
                 {
                     gamer.IsFinished = true;
@@ -96,7 +94,9 @@ namespace BlackJack.BusinessLogicLayer.Handlers
                     usersToUpdate.Add(gamer);
                     isUsersChanged = true;
                 }
-                if ((gamer.Points == maxGamerPoints) && (gamer.Points > dealerPoints) && (gamer.GamerStatus != "winner"))
+                if ((gamer.Points == _maxGamerPoints) && 
+                    (gamer.Points > _dealerPoints) && 
+                    (gamer.GamerStatus != "winner"))
                 {
                     if (!gamer.Name.Contains("BotDealer"))
                     {
@@ -106,7 +106,9 @@ namespace BlackJack.BusinessLogicLayer.Handlers
                         isUsersChanged = true;
                     }
                 }
-                if ((gamer.Points == maxGamerPoints) && (gamer.Points < dealerPoints) && (gamer.GamerStatus != "loser"))
+                if ((gamer.Points == _maxGamerPoints) &&
+                    (gamer.Points < _dealerPoints) && 
+                    (gamer.GamerStatus != "loser"))
                 {
                     if (!gamer.Name.Contains("BotDealer"))
                     {
@@ -116,7 +118,9 @@ namespace BlackJack.BusinessLogicLayer.Handlers
                         isUsersChanged = true;
                     }
                 }
-                if ((gamer.Name.Contains("BotDealer")) && (gamer.Points == maxGamerPoints) && (gamer.GamerStatus != "winner"))
+                if ((gamer.Name.Contains("BotDealer")) && 
+                    (gamer.Points == _maxGamerPoints) && 
+                    (gamer.GamerStatus != "winner"))
                 {
                     gamer.IsFinished = true;
                     gamer.GamerStatus = "winner";

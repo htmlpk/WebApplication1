@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Dapper;
 using System.Collections.Generic;
-using System.Text;
-using UI.Entities;
-using Dapper;
-using Dapper.Contrib.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
+using UI.Entities;
 
 namespace BlackJack.DataAcessLayer.Repository
 {
@@ -14,7 +11,6 @@ namespace BlackJack.DataAcessLayer.Repository
         public GameRepository(string connectionString)
             : base("Game", connectionString)
         {
-
         }
 
         public async Task<IEnumerable<Game>> GetAll(string userName)
