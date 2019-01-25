@@ -124,7 +124,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
             var cards = await _cardRepository.FindByGameId(game.Id);
-            var match = new Match() { Game = game, Gamers = gamers, Cards = cards };
+            var match = new Match() { Game = game, Gamers = gamers, Rounds = cards };
             return match;
         }
 
@@ -235,7 +235,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             var game = await _gameRepository.FindById(id.ToString());
             var gamers = await _userRepository.FindByGameId(game.Id);
             var cards = await _cardRepository.FindByGameId(game.Id);
-            var match = new Match() { Game = game, Gamers = gamers, Cards = cards };
+            var match = new Match() { Game = game, Gamers = gamers, Rounds = cards };
             return match;
         }
 

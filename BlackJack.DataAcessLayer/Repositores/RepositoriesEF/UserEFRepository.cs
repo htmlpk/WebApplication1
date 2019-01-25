@@ -17,7 +17,7 @@ namespace BlackJack.DataAccessLayer.Repository
        
         public override async Task<UserInGame> FindById(string id)
         {
-            return _database.UserInGame.Where(item=>item.Id == Guid.Parse(id)).First();
+            return _database.UserInGames.Where(item=>item.Id == Guid.Parse(id)).First();
         }
 
         public async Task<string> GetUserId(string userName)
@@ -34,7 +34,7 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public virtual async Task<IEnumerable<UserInGame>> FindByGameId(Guid id)
         {
-            var lastgame = _database.UserInGame.Where(item => item.GameId == id);
+            var lastgame = _database.UserInGames.Where(item => item.GameId == id);
             return lastgame;
         }
     }

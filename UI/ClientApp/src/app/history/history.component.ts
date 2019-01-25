@@ -29,7 +29,7 @@ export class HistoryComponent {
       isFinished: false,
       data: new Date(),
     },
-    cards: [],
+    rounds: [],
     gamers: []
   };
 
@@ -57,7 +57,7 @@ export class HistoryComponent {
         isFinished: true,
         data: new Date(),
       },
-      cards: [],
+      rounds: [],
       gamers: []
     };
   }

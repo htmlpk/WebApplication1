@@ -22,8 +22,18 @@ namespace BlackJack.UI.Controllers
         [HttpGet]
         public async Task<IEnumerable<Game>> Get()
         {
-            var jwtUsername = User.Identity.Name;
-            return await _gameService.GetAll(jwtUsername);
+            try
+            {
+                var jwtUsername = User.Identity.Name;
+                var a = await _gameService.GetAll(jwtUsername);
+                return await _gameService.GetAll(jwtUsername);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+           
         }
 
         [HttpGet("{id}")]

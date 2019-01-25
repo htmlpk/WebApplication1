@@ -1,7 +1,6 @@
 import { Guid } from 'guid-typescript';
 
-
-export class Card {
+export class Round {
     userInGameID: Guid;
     value: string;
     suit: string;

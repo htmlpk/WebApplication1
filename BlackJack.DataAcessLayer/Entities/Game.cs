@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 namespace BlackJack.DataAccessLayer.Entities
 {
-    [Table("Game")]
-    public class Game : BasedEntity
+    public class Game : BaseEntity
     {
         public DateTime Data { get; set; }
         public bool IsFinished { get; set; }

@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 namespace BlackJack.DataAccessLayer.Entities
 {
-    [Table("UserInGame")]
-    public class UserInGame : BasedEntity
+    public class UserInGame : BaseEntity
     {
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
         public string UserId{ get; set; }

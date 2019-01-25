@@ -7,6 +7,6 @@ namespace BlackJack.BusinessLogicLayer
     {
         public Game Game { get; set; }
         public IEnumerable<UserInGame> Gamers { get; set; }
-        public IEnumerable<GameRound> Cards { get; set; }
+        public IEnumerable<GameRound> Rounds { get; set; }
     }
 }

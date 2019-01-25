@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public interface IUserRepository : IBaseGuidRepository<UserInGame>
+    public interface IUserRepository : IBaseRepository<UserInGame>
     {
         Task<IEnumerable<string>> GetBotsIds();
         Task<string> GetUserId(string userName);

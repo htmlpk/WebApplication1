@@ -14,10 +14,10 @@
       Gamer status - {{gamer.gamerStatus}}<br>
     </div>
     <div>
-      <div *ngFor="let card of match.cards">
-        <div *ngIf="card.userInGameId==gamer.id">
-          <img *ngIf="match.game.isFinished==true" src="../../assets/{{card.suit}}-{{card.value}}.png">
-          <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')!=0" src="../../assets/{{card.suit}}-{{card.value}}.png">
+      <div *ngFor="let round of match.rounds">
+        <div *ngIf="round.userInGameId==gamer.id">
+          <img *ngIf="match.game.isFinished==true" src="../../assets/{{round.suit}}-{{round.value}}.png">
+          <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')!=0" src="../../assets/{{round.suit}}-{{round.value}}.png">
           <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')==0" src="../../assets/untitled.png">
         </div>
       </div>

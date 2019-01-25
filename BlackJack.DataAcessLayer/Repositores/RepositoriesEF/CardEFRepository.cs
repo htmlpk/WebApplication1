@@ -16,16 +16,16 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public override async Task<GameRound> FindById(string id)
         {
-            return _database.GameRound.Where(item=>item.Id == Guid.Parse(id)).First();
+            return _database.GameRounds.Where(item=>item.Id == Guid.Parse(id)).First();
         }
         public async Task<IEnumerable<GameRound>> FindByGameId(Guid id)
         {
-            return _database.GameRound.Where(item=>item.GameId == id);
+            return _database.GameRounds.Where(item=>item.GameId == id);
         }
 
         public async Task<IEnumerable<GameRound>> FindByUserId(Guid id)
         {
-            return _database.GameRound.Where(item => item.UserInGameId == id);
+            return _database.GameRounds.Where(item => item.UserInGameId == id);
         }
     }
 }

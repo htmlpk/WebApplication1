@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public interface IBaseGuidRepository<T> where T : BasedEntity
+    public interface IBaseRepository<T> where T : BaseEntity
     {
         Task Add(List<T> item);
         Task Add(T item);

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public interface IGameRepository : IBaseGuidRepository<Game>
+    public interface IGameRepository : IBaseRepository<Game>
     {
         Task<IEnumerable<Game>> GetAll(string userName);
         Task<Game> GetLastGame(string userName);

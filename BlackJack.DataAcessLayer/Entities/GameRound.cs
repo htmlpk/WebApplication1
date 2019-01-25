@@ -1,14 +1,14 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlackJack.DataAccessLayer.Entities
 {
-    [Table("GameRound")]
-    public class GameRound : BasedEntity
+    public class GameRound : BaseEntity
     {
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
+        [ForeignKey("Id")]
         public Guid GameId { get; set; }
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey("Id")]
+        [ForeignKey("Id")]
         public Guid UserInGameId { get; set; }
         public int RaundNumber { get; set; }
         public string Value { get; set; }
@@ -16,8 +16,5 @@ namespace BlackJack.DataAccessLayer.Entities
         public int Points { get; set; }
         [Computed]
         public virtual UserInGame Users { get; set; }
-        public GameRound()
-        {
-        }
     }
 }

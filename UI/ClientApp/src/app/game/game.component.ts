@@ -19,7 +19,7 @@ export class GameComponent implements OnInit {
       isFinished: null,
       data: new Date(),
     },
-    cards: [],
+    rounds: [],
     gamers: [],
   };
 
@@ -50,9 +50,6 @@ export class GameComponent implements OnInit {
       this.match = result;      
     }, error => { console.error(error) });
   }
-
-
-
 }
 
 

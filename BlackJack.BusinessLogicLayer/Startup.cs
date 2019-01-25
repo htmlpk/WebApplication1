@@ -15,7 +15,7 @@ namespace BlackJack.BusinessLogicLayer
             // Repository Dapper
             serviceCollection.AddScoped<IGameRepository, GameRepository>(provider => new GameRepository(connectionString));
             serviceCollection.AddScoped<IUserRepository, UserInGameRepository>(provider => new UserInGameRepository(connectionString));
-            serviceCollection.AddScoped<ICardRepository, GameRoundsRepository>(provider => new GameRoundsRepository(connectionString));
+            serviceCollection.AddScoped<ICardRepository, GameRoundRepository>(provider => new GameRoundRepository(connectionString));
             // Services
             serviceCollection.AddScoped<IGameService, GameService>();
         }

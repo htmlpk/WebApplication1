@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public abstract class BaseEFRepository<T> : IBaseGuidRepository<T> where T : BasedEntity
+    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected ApplicationDbContext _database;
 

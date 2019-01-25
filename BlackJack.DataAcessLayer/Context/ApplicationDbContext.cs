@@ -6,9 +6,9 @@ namespace BlackJack.DataAccessLayer.Context
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public DbSet<GameRound> GameRound { get; set; }
-        public DbSet<Game> Game { get; set; }
-        public DbSet<UserInGame> UserInGame { get; set; }
+        public DbSet<GameRound> GameRounds { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<UserInGame> UserInGames { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

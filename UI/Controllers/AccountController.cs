@@ -45,8 +45,17 @@ namespace BlackJack.UI.Controllers
         [HttpGet("{username}")]
         public async Task<string> Get(string username)
         {
-            var userToken = await Login(username);
-            return userToken;
+            try
+            {
+                return await Login(username);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+           
+            return null;
         }
         
         [HttpPut("{username}")]

@@ -3,12 +3,12 @@ using System;
 
 namespace BlackJack.DataAccessLayer.Entities
 {
-    public class BasedEntity
+    public class BaseEntity
     {
         [ExplicitKey]
         public Guid Id { get; set; }
 
-        public BasedEntity()
+        public BaseEntity()
         {
             this.Id = Guid.NewGuid();
         }

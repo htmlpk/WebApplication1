@@ -12,9 +12,9 @@
                     <div style="text-align:center" *ngFor="let gamer of currentMatch.gamers">
                         Name - {{gamer.name}}<br>
                         Gamer status - {{gamer.gamerStatus}}<br>
-                        <div *ngFor="let card of currentMatch.cards">
-                            <div *ngIf="card.userInGameId==gamer.id">
-                                <img src="../../assets/{{card.suit}}-{{card.value}}.png">
+                        <div *ngFor="let round of currentMatch.rounds">
+                            <div *ngIf="round.userInGameId==gamer.id">
+                                <img src="../../assets/{{round.suit}}-{{round.value}}.png">
                                 Received in round {{card.raundNumber+1}} 
                             </div>
                         </div>

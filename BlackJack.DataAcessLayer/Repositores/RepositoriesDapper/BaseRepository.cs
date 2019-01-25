@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public abstract class BaseRepository<T> : IBaseGuidRepository<T> where T : BasedEntity
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         private string _connectionString;
         private IDbConnection _connection;
