@@ -1,7 +1,7 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
 
-namespace BlackJack.DataAcessLayer.Entities
+namespace BlackJack.DataAccessLayer.Entities
 {
     public class BasedEntity
     {

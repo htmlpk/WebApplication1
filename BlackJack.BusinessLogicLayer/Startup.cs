@@ -1,5 +1,5 @@
 ﻿using BlackJack.BusinessLogicLayer.Services;
-using BlackJack.DataAcessLayer.Repository;
+using BlackJack.DataAccessLayer.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlackJack.BusinessLogicLayer
@@ -12,7 +12,7 @@ namespace BlackJack.BusinessLogicLayer
 
         public static void SetDapper(IServiceCollection serviceCollection, string connectionString)
         {
-            // Repo Dapper
+            // Repository Dapper
             serviceCollection.AddScoped<IGameRepository, GameRepository>(provider => new GameRepository(connectionString));
             serviceCollection.AddScoped<IUserRepository, UserInGameRepository>(provider => new UserInGameRepository(connectionString));
             serviceCollection.AddScoped<ICardRepository, GameRoundsRepository>(provider => new GameRoundsRepository(connectionString));
@@ -22,7 +22,7 @@ namespace BlackJack.BusinessLogicLayer
 
         public static void SetEntityFramework(IServiceCollection serviceCollection, string connectionString)
         {
-            // Repo EF
+            // Repository EF
             serviceCollection.AddScoped<IGameRepository, GameRoundsEFRepository>();
             serviceCollection.AddScoped<IUserRepository, UserEFRepository>();
             serviceCollection.AddScoped<ICardRepository, CardEFRepository>();

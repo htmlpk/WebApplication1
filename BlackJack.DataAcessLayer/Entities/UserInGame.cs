@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BlackJack.DataAcessLayer.Entities
+namespace BlackJack.DataAccessLayer.Entities
 {
     [Table("UserInGame")]
     public class UserInGame : BasedEntity
@@ -22,6 +22,5 @@ namespace BlackJack.DataAcessLayer.Entities
         public virtual Game Game { get; set; }
         [Computed]
         public virtual List<GameRound> Cards { get; set; }
-
     }
 }

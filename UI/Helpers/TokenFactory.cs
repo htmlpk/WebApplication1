@@ -1,4 +1,4 @@
-﻿using BlackJack.DataAcessLayer.Entities;
+﻿using BlackJack.DataAccessLayer.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;

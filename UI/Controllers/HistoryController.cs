@@ -1,5 +1,5 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.DataAcessLayer.Entities;
+using BlackJack.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

@@ -1,11 +1,11 @@
 ﻿using BlackJack.BusinessLogicLayer.CardData;
-using BlackJack.DataAcessLayer.Entities;
-using BlackJack.DataAcessLayer.Repository;
+using BlackJack.DataAccessLayer.Entities;
+using BlackJack.DataAccessLayer.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlackJack.DataAcessLayer.Entities;
+using BlackJack.DataAccessLayer.Entities;
 
 
 namespace BlackJack.BusinessLogicLayer.Services

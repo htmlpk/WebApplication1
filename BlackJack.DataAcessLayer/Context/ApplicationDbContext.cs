@@ -1,8 +1,8 @@
-﻿using BlackJack.DataAcessLayer.Entities;
+﻿using BlackJack.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlackJack.DataAcessLayer.Context
+namespace BlackJack.DataAccessLayer.Context
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {

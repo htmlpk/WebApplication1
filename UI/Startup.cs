@@ -1,6 +1,6 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.DataAcessLayer.Context;
-using BlackJack.DataAcessLayer.Entities;
+using BlackJack.DataAccessLayer.Context;
+using BlackJack.DataAccessLayer.Entities;
 using BlackJack.UI;
 using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

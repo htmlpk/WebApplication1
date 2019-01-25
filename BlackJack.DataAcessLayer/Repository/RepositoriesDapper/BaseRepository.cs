@@ -1,4 +1,4 @@
-﻿using BlackJack.DataAcessLayer.Entities;
+﻿using BlackJack.DataAccessLayer.Entities;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BlackJack.DataAcessLayer.Repository
+namespace BlackJack.DataAccessLayer.Repository
 {
     public abstract class BaseRepository<T> : IBaseGuidRepository<T> where T : BasedEntity
     {

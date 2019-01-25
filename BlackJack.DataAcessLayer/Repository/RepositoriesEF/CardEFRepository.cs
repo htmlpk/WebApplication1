@@ -1,11 +1,11 @@
-﻿using BlackJack.DataAcessLayer.Context;
-using BlackJack.DataAcessLayer.Entities;
+﻿using BlackJack.DataAccessLayer.Context;
+using BlackJack.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlackJack.DataAcessLayer.Repository
+namespace BlackJack.DataAccessLayer.Repository
 {
     public class CardEFRepository : BaseEFRepository<GameRound>, ICardRepository
     {

@@ -1,5 +1,5 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.DataAcessLayer.Entities;
+using BlackJack.DataAccessLayer.Entities;
 using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -141,9 +141,4 @@ namespace BlackJack.UI.Controllers
             return null;
         }
     }
-
-
-
-
-
 }

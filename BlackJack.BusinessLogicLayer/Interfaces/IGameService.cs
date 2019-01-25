@@ -1,4 +1,4 @@
-﻿using BlackJack.DataAcessLayer.Entities;
+﻿using BlackJack.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

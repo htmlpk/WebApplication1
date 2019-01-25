@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BlackJack.DataAcessLayer.Entities
+namespace BlackJack.DataAccessLayer.Entities
 {
     [Table("Game")]
     public class Game : BasedEntity

@@ -1,10 +1,10 @@
-﻿using BlackJack.DataAcessLayer.Entities;
+﻿using BlackJack.DataAccessLayer.Entities;
 using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlackJack.DataAcessLayer.Repository
+namespace BlackJack.DataAccessLayer.Repository
 {
     public class UserInGameRepository : BaseRepository<UserInGame>, IUserRepository
     {
