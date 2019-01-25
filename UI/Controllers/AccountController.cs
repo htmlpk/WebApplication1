@@ -52,7 +52,7 @@ namespace BlackJack.UI.Controllers
         [HttpPut("{username}")]
         public async Task Put(string username)
         {
-            var countofbots = "";
+            var countofbots = string.Empty;
             try
             {
                 using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))

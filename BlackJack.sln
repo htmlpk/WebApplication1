@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.DataAcessLayer", "BlackJack.DataAcessLayer\BlackJack.DataAcessLayer.csproj", "{24C78D32-71B8-42CF-BD33-3C6D5B8F670C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.DataAcсessLayer", "BlackJack.DataAcessLayer\BlackJack.DataAcсessLayer.csproj", "{24C78D32-71B8-42CF-BD33-3C6D5B8F670C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlackJack.BusinessLogicLayer", "BlackJack.BusinessLogicLayer\BlackJack.BusinessLogicLayer.csproj", "{0B75E634-7934-4492-89D5-9BE5B759CEE9}"
 EndProject
