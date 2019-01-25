@@ -18,13 +18,19 @@ namespace BlackJack.DataAcessLayer.Data
         {
             var value = Enum.GetValues(typeof(CardValue)).Cast<CardValue>().ToList();
             var suits = Enum.GetValues(typeof(CardSuit)).Cast<CardSuit>().ToList();
-            suits.ForEach(suit =>
-                value.ForEach(rank =>
-                _cards.Add(new Card(
-                    Enum.GetName(typeof(CardValue), rank),
-                    Enum.GetName(typeof(CardSuit), suit)
-                   )
-                ))
+            suits.ForEach(suit => {
+                if (!Enum.GetName(typeof(CardSuit), suit).Equals("None"))
+                    value.ForEach(rank =>
+                    {
+                        if (!Enum.GetName(typeof(CardValue), rank).Equals("None"))
+                            _cards.Add(new Card(
+                            Enum.GetName(typeof(CardValue), rank),
+                            Enum.GetName(typeof(CardSuit), suit)
+                           )
+                        );
+                    }
+                    );
+                }
                 );
             if (shuffled)
                 Shuffle();

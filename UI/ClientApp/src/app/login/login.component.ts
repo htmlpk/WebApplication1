@@ -36,14 +36,13 @@ export class LoginComponent implements OnInit {
     this.loginservice.login(this.http, this.username).subscribe(result => {
       localStorage.setItem('token', this.token);
       this.token = result;
-      console.log(localStorage.getItem('token'));
     }, error => console.error(error));
   }
 
   public startGame(): void {
     this.loginservice.login(this.http, this.username).subscribe(result => {
-      localStorage.setItem('token', this.token);
       this.token = result;
+      localStorage.setItem('token', this.token);
       console.log(localStorage.getItem('token'));
     }, error => console.error(error));
     this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
