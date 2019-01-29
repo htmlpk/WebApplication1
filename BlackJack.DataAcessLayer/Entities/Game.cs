@@ -6,7 +6,7 @@ namespace BlackJack.DataAccessLayer.Entities
 {
     public class Game : BaseEntity
     {
-        public DateTime Data { get; set; }
+        public DateTime Date { get; set; }
         public bool IsFinished { get; set; }
         public int CountOfRounds { get; set; }
         [Computed]

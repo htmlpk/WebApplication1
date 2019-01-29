@@ -4,7 +4,7 @@
       <div *ngSwitchCase=false>In progress</div>
       <div *ngSwitchCase=true>Finished</div>
     </div>
-    <div style="border:1px black">Date of game - {{match.game.data | date:'dd-MM-yyyy'}}, time - {{match.game.data |
+    <div style="border:1px black">Date of game - {{match.game.date | date:'dd-MM-yyyy'}}, time - {{match.game.date |
       date:'hh:mm'}} </div>
   </div>
   <div style="text-align:center" *ngFor="let gamer of match.gamers">

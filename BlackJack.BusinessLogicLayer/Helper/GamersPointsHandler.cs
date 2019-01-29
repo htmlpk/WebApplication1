@@ -50,7 +50,7 @@ namespace BlackJack.BusinessLogicLayer
             }
         }
 
-        public void GameFinishedDealerlooser(IEnumerable<UserInGame> gamers, ref List<UserInGame> usersToUpdate, ref bool isUsersChanged)
+        public void GameFinishedDealerloser(IEnumerable<UserInGame> gamers, ref List<UserInGame> usersToUpdate, ref bool isUsersChanged)
         {
             foreach (var gamer in gamers)
             {
@@ -81,11 +81,11 @@ namespace BlackJack.BusinessLogicLayer
             }
         }
 
-        public void GameFinishedDealerNotlooser(IEnumerable<UserInGame> gamers, ref List<UserInGame> usersToUpdate, ref bool isUsersChanged)
+        public void GameFinishedDealerNotloser(IEnumerable<UserInGame> gamers, ref List<UserInGame> usersToUpdate, ref bool isUsersChanged)
         {
             foreach (var gamer in gamers)
             {
-                if ((gamer.Points <= _maxGamerPoints) &&
+                if ((gamer.Points < _maxGamerPoints) &&
                 (gamer.GamerStatus != "loser"))
                 {
                     gamer.IsFinished = true;

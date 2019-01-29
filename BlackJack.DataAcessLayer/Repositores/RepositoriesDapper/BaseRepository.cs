@@ -53,34 +53,6 @@ namespace BlackJack.DataAccessLayer.Repository
             await Connection.UpdateAsync(item);
         }
 
-        public async Task Remove(List<string> idToDelete)
-        {
-            if (idToDelete == null || idToDelete.Count < 1)
-            {
-                return;
-            }
-
-            var IdsForDelete = new List<T>();
-
-            foreach (var id in idToDelete)
-            {
-                var itemForDelete = (T)Activator.CreateInstance(typeof(T), new object[] { });
-                itemForDelete.Id = Guid.Parse(id);
-                IdsForDelete.Add(itemForDelete);
-            }
-            await Connection.DeleteAsync(IdsForDelete);
-        }
-
-        public virtual async Task Remove(T item)
-        {
-            await Connection.ExecuteAsync("DELETE FROM " + _tableName + " WHERE Id=@Id", new { Id = item.Id });
-        }
-
-        public virtual async Task RemoveById(string id)
-        {
-            await Connection.ExecuteAsync("DELETE FROM " + _tableName + " WHERE Id=@Id", new { Id = id });
-        }
-
         public virtual async Task<T> FindById(string id)
         {
             var result = await Connection.QueryFirstOrDefaultAsync<T>("SELECT TOP(1) * FROM " + _tableName + " WHERE Id=@Id", new { Id = id });

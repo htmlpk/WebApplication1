@@ -42,21 +42,20 @@ namespace BlackJack.UI.Controllers
         }
         
         [HttpGet("{username}")]
-        public async Task<string> Get(string username)
+        public async Task<string> Get(string userName)
         {
             try
             {
-                return await Login(username);
+                return await Login(userName);
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
         
         [HttpPut("{username}")]
-        public async Task Put(string username)
+        public async Task Put(string userName)
         {
             var countofbots = string.Empty;
             try
@@ -65,7 +64,7 @@ namespace BlackJack.UI.Controllers
                 {
                     countofbots = await reader.ReadToEndAsync();
                 }
-                await _gameService.StartGame(username, int.Parse(countofbots));
+                await _gameService.StartGame(userName, int.Parse(countofbots));
             }
             catch (Exception e)
             {
@@ -73,10 +72,10 @@ namespace BlackJack.UI.Controllers
             }
         }
 
-        public async Task<IActionResult> Register(string username)
+        public async Task<IActionResult> Register(string userName)
         {
-            User user = new User { Email = username, UserName = username };
-            var result = await _userManager.CreateAsync(user, username);
+            User user = new User { Email = userName, UserName = userName };
+            var result = await _userManager.CreateAsync(user, userName);
             if (result.Succeeded)
             {
                 try
@@ -91,16 +90,15 @@ namespace BlackJack.UI.Controllers
             return Ok();
         }
         
-        public async Task<string> Login(string username)
+        public async Task<string> Login(string userName)
         {
-            var result = await _signInManager.PasswordSignInAsync(username, username, false, false);
+            var result = await _signInManager.PasswordSignInAsync(userName, userName, false, false);
             if (!result.Succeeded)
             {
-                await Register(username);
+                await Register(userName);
             };
-            User user = _userManager.Users.FirstOrDefault(x => x.Email == username);
-            var tokenFactory = new TokenFactory();
-            return await GetToken(username);
+            User user = _userManager.Users.FirstOrDefault(x => x.Email == userName);
+            return await GetToken(userName);
         }
 
         private async Task<string> GetToken(string userName)
@@ -114,11 +112,11 @@ namespace BlackJack.UI.Controllers
             }
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
+                    issuer: AuthOptions.Issuer,
+                    audience: AuthOptions.Audience,
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.Lifetime)),
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
             var response = new
@@ -129,9 +127,9 @@ namespace BlackJack.UI.Controllers
             var a = JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
             return JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
         }
-        private ClaimsIdentity GetIdentity(string username)
+        private ClaimsIdentity GetIdentity(string userName)
         {
-            User user = _userManager.Users.FirstOrDefault(x => x.Email == username);
+            User user = _userManager.Users.FirstOrDefault(x => x.Email == userName);
             if (user != null)
             {
                 var claims = new List<Claim>

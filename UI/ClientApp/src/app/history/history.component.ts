@@ -27,7 +27,7 @@ export class HistoryComponent {
       id: Guid.create(),
       countOfRounds: 0,
       isFinished: false,
-      data: new Date(),
+      date: new Date(),
     },
     rounds: [],
     gamers: []
@@ -55,7 +55,7 @@ export class HistoryComponent {
         id: Guid.create(),
         countOfRounds: 0,
         isFinished: true,
-        data: new Date(),
+        date: new Date(),
       },
       rounds: [],
       gamers: []

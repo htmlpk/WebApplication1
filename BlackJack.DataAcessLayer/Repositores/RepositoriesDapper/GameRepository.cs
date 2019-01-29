@@ -15,14 +15,14 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public async Task<IEnumerable<Game>> GetAll(string userName)
         {
-            var getAllGames = $@"Select {_tableName}.* from {_tableName},UserInGames where UserInGames.GameId = Games.Id and UserInGames.Name = @username";
+            var getAllGames = $@"Select g.* from {_tableName} g, UserInGames u where u.GameId = g.Id and u.Name = @username";
             var allGames = await Connection.QueryAsync<Game>(getAllGames, new { username = userName});
-            return allGames.OrderByDescending(item => item.Data);
+            return allGames.OrderByDescending(item => item.Date);
         }
 
         public async Task<Game> GetLastGame(string userName)
         {
-            var sqllastGame = $"Select {_tableName}.* from {_tableName},UserInGames,AspNetUsers where UserInGames.GameId = {_tableName}.ID and AspNetUsers.Id = UserInGames.UserId and AspNetUsers.Email = @username and {_tableName}.Data = (Select Max(Data) from {_tableName}) ";
+            var sqllastGame = $"Select g.* from {_tableName} g,UserInGames u,AspNetUsers a where u.GameId = g.Id and a.Id = u.UserId and a.Email = @username and g.Date = (Select Max(Date) from Games) ";
             var lastGame = await Connection.QueryFirstAsync<Game>(sqllastGame,new { username = userName});
             return lastGame;
         }

@@ -32,7 +32,7 @@ namespace BlackJack.UI.Controllers
         }
 
         [HttpPut("{username}")]
-        public async Task<Match> Put([FromBody] bool isCardNeed, string username = null)
+        public async Task<Match> Put([FromBody] bool isCardNeed, string userName = null)
         {
             try
             {

@@ -1,4 +1,5 @@
 import { LoginComponent } from './login/login.component';
+import { ErrorComponent } from './error/error.component';
 import { GameComponent } from './game/game.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,8 @@ import { GameService } from 'src/app/shared/services/shared.gameservice';
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   { path: 'game', component: GameComponent },
-  { path: 'history', loadChildren: './history/history.module#HistoryModule' }
+  { path: 'history', loadChildren: './history/history.module#HistoryModule' },
+  { path: 'error', component: ErrorComponent }
   ];
 
 @NgModule({
@@ -22,6 +24,7 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     GameComponent,
+    ErrorComponent
     
   ],
   imports: [

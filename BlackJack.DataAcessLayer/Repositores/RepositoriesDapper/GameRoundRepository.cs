@@ -15,14 +15,14 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public async Task<IEnumerable<GameRound>> FindByGameId(Guid id)
         {
-            var sqlGetCardswByGameId = $"Select {_tableName}.* from {_tableName},UserInGames,Games where UserInGames.ID = {_tableName}.UserInGameId and Games.ID = UserInGames.GameId and Games.ID = @id";
+            var sqlGetCardswByGameId = $"Select r.* from {_tableName} r,UserInGames u,Games g where u.Id = r.UserInGameId and g.Id = u.GameId and g.Id = @id";
             var cards = await Connection.QueryAsync<GameRound>(sqlGetCardswByGameId, new { id = id.ToString() });
             return cards;
         }
 
         public async Task<IEnumerable<GameRound>> FindByUserId(Guid id)
         {
-            var sqlGetCardswByGameId = $"Select {_tableName}.* from {_tableName} Where UserInGameId = @id";
+            var sqlGetCardswByGameId = $"Select r.* from {_tableName} r Where UserInGameId = @id";
             var cards = await Connection.QueryAsync<GameRound>(sqlGetCardswByGameId, new { id = id.ToString() });
             return cards;
         }

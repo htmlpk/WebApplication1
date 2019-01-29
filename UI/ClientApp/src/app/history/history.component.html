@@ -2,7 +2,7 @@
 
     <div *ngFor="let match of matches">
         <div>
-            || Date of game - {{match.data | date:'yyyy-MM-dd'}}, time - {{match.data | date:'hh:mm'}} ||
+            || Date of game - {{match.date | date:'yyyy-MM-dd'}}, time - {{match.date | date:'hh:mm'}} ||
             <button (click)="getGameDetails(match.id)">Get info</button>
             <div *ngIf="match.id === currentMatch.game.id">
                 <button (click)="closeDetails()">Hide info</button>

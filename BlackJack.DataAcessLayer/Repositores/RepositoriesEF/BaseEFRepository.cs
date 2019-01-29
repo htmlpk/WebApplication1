@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public abstract class BaseEFRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public abstract class BaseEFRepository<T> where T : BaseEntity
     {
         protected ApplicationDbContext _database;
 
@@ -20,9 +20,9 @@ namespace BlackJack.DataAccessLayer.Repository
             await _database.SaveChangesAsync();
         }
 
-        public async Task Add(List<T> entity)
+        public async Task Add(List<T> entities)
         {
-            await _database.Set<T>().AddRangeAsync(entity);
+            await _database.Set<T>().AddRangeAsync(entities);
             await _database.SaveChangesAsync();
         }
 
@@ -32,12 +32,10 @@ namespace BlackJack.DataAccessLayer.Repository
             await _database.SaveChangesAsync();
         }
 
-        public async Task Update(List<T> entity)
+        public async Task Update(List<T> entities)
         {
-            _database.Set<T>().UpdateRange(entity);
+            _database.Set<T>().UpdateRange(entities);
             await _database.SaveChangesAsync();
         }
-
-        public abstract Task<T> FindById(string id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BlackJack.DataAccessLayer.Context;
 using BlackJack.DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +15,18 @@ namespace BlackJack.DataAccessLayer.Repository
         {
         }
 
-        public override async Task<GameRound> FindById(string id)
+        public async Task<GameRound> FindById(string id)
         {
-            return _database.GameRounds.Where(item=>item.Id == Guid.Parse(id)).First();
+            return await _database.GameRounds.Where(item => item.Id == Guid.Parse(id)).FirstOrDefaultAsync();
         }
         public async Task<IEnumerable<GameRound>> FindByGameId(Guid id)
         {
-            return _database.GameRounds.Where(item=>item.GameId == id);
+            return await _database.GameRounds.Where(item=>item.GameId == id).ToListAsync();
         }
 
         public async Task<IEnumerable<GameRound>> FindByUserId(Guid id)
         {
-            return _database.GameRounds.Where(item => item.UserInGameId == id);
+            return await _database.GameRounds.Where(item => item.UserInGameId == id).ToListAsync();
         }
     }
 }

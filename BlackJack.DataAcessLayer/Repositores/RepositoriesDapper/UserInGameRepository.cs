@@ -15,22 +15,22 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public async Task<string> GetUserId(string userName)
         {
-            var sqlIds = $"Select Id from AspNetUsers where Email = @username;";
-            var id = await Connection.QueryFirstAsync<string>(sqlIds, new { username = userName});
+            var userIds = $"Select Id from AspNetUsers where Email = @username;";
+            var id = await Connection.QueryFirstOrDefaultAsync<string>(userIds, new { username = userName });
             return id;
         }
 
         public async Task<IEnumerable<string>> GetBotsIds()
         {
-            var sqlIds = "Select Id from AspNetUsers where Email LIKE 'Bot%' Order By Email;";
-            var ids = await Connection.QueryAsync<string>(sqlIds);
+            var botsIds = "Select Id from AspNetUsers where Email LIKE 'Bot%' Order By Email;";
+            var ids = await Connection.QueryAsync<string>(botsIds);
             return ids;
         }
 
         public virtual async Task<IEnumerable<UserInGame>> FindByGameId(Guid id)
         {
-            var result = await Connection.QueryAsync<UserInGame>($"SELECT * FROM {_tableName} WHERE GameId= @id", new { id = id.ToString() });
-            return result;
+            var usersByGame = await Connection.QueryAsync<UserInGame>($"SELECT * FROM {_tableName} WHERE GameId= @id", new { id = id.ToString() });
+            return usersByGame;
         }
     }
 }
