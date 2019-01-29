@@ -1,15 +1,12 @@
 ﻿using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlackJack.DataAccessLayer.Entities
 {
     public class UserInGame : BaseEntity
     {
-        [ForeignKey("Id")]
         public string UserId{ get; set; }
-        [ForeignKey("Id")]
         public Guid GameId { get; set; }
         public string Name { get; set; }
         public bool IsDealer { get; set; }

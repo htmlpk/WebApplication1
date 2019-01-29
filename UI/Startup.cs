@@ -70,7 +70,7 @@ namespace UI
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // [Entity Framework <=> Dapper] 
-            BlackJack.BusinessLogicLayer.Startup.SetEntityFramework(services, connectionString);
+            BlackJack.BusinessLogicLayer.Startup.SetDapper(services, connectionString);
             services.Configure<IdentityOptions>(options =>
             {                
                 options.Password.RequireDigit = false;

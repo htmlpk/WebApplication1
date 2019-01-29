@@ -85,7 +85,7 @@ namespace BlackJack.BusinessLogicLayer
         {
             foreach (var gamer in gamers)
             {
-                if ((gamer.Points < _maxGamerPoints) &&
+                if ((gamer.Points <= _maxGamerPoints) &&
                 (gamer.GamerStatus != "loser"))
                 {
                     gamer.IsFinished = true;

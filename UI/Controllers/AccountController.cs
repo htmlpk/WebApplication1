@@ -40,7 +40,6 @@ namespace BlackJack.UI.Controllers
         {
             return _userManager.Users.Where(item => !item.Email.Contains("Bot")).Select(item2 => item2.Email);
         }
-
         
         [HttpGet("{username}")]
         public async Task<string> Get(string username)
@@ -54,8 +53,6 @@ namespace BlackJack.UI.Controllers
 
                 throw;
             }
-           
-            return null;
         }
         
         [HttpPut("{username}")]
@@ -116,7 +113,6 @@ namespace BlackJack.UI.Controllers
                 return null;
             }
             var now = DateTime.UtcNow;
-            // создаем JWT-токен
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
