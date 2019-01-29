@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlackJack.DataAccessLayer.Entities;
-
 
 namespace BlackJack.BusinessLogicLayer.Services
 {
@@ -59,17 +57,14 @@ namespace BlackJack.BusinessLogicLayer.Services
             {
                 if (i == 0)
                 {
-                    // Creating user
                     gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = "InGame", Points = 0, UserId = userId });
                 }
                 if (i == 1)
                 {
-                    // Creating bot-dealer
                     gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "BotDealer", IsDealer = true, IsFinished = false, GamerStatus = "InGame", Points = 0, UserId = botsIds[5] });
                 }
                 if (i > 1)
                 {
-                    // Creating bots
                     gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "Bot" + i, IsDealer = false, IsFinished = false, GamerStatus = "InGame", Points = 0, UserId = botsIds[i - 2] });
                 }
             }
@@ -133,6 +128,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             var lastMatch = await GetLastMatch(userName);
             var raunds = await _cardRepository.FindByGameId(lastMatch.Game.Id);
             var cardsToAdd = new List<GameRound>();
+            UserInGame user = null;
             List<Card> usedCards = MapRaundToCard(raunds);
             foreach (var gamer in lastMatch.Gamers)
             {
@@ -150,9 +146,13 @@ namespace BlackJack.BusinessLogicLayer.Services
                 }
                 if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (!isUserNeedCard))
                 {
-                    gamer.IsFinished = true;
-                    await _userRepository.Update(gamer);
+                    user = gamer; 
                 }
+            }
+            if ((user!=null)&&(!user.Name.Contains("Bot")) && (!user.IsFinished) && (!isUserNeedCard))
+            {
+                user.IsFinished = true;
+                await _userRepository.Update(user);
             }
             await _cardRepository.Add(cardsToAdd);
             await UpdateUsersPoints(lastMatch.Game.Id);
