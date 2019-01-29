@@ -6,9 +6,9 @@ namespace BlackJack.DataAccessLayer.Entities
 {
     public class GameRound : BaseEntity
     {
-        [ForeignKey("Id")]
+       // [ForeignKey("Id")]
         public Guid GameId { get; set; }
-        [ForeignKey("Id")]
+        //[ForeignKey("Id")]
         public Guid UserInGameId { get; set; }
         public int RaundNumber { get; set; }
         public string Value { get; set; }

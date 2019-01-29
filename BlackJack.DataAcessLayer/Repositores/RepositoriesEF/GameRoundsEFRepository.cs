@@ -20,12 +20,12 @@ namespace BlackJack.DataAccessLayer.Repository
         }
         public async Task<IEnumerable<Game>> GetAll(string userName)
         {
-            return _database.Games.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicatonUser.Email == userName) != null).OrderByDescending(t => t.Data);
+            return _database.Games.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicationUser.Email == userName) != null).OrderByDescending(t => t.Data);
         }
        
         public async Task<Game> GetLastGame(string userName)
         {
-            return _database.Games.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicatonUser.Email == userName) != null).OrderByDescending(t => t.Data).FirstOrDefault();
+            return _database.Games.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicationUser.Email == userName) != null).OrderByDescending(t => t.Data).FirstOrDefault();
         }
     }
 }

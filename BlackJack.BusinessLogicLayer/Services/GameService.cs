@@ -209,20 +209,18 @@ namespace BlackJack.BusinessLogicLayer.Services
             var maxGamerPoints = gamers.Select(data => data.Points).Where(data => data <= 21).Max();
             var handler = new GamersPointsHandler(gamers, dealerPoints, dealerStatus, maxGamerPoints);
             var usersToUpdate = new List<UserInGame>();
-
             if ((game.IsFinished)&&(dealerStatus.Equals("loser")))
             {
-                handler.GameFinishedDealerlooser(ref usersToUpdate, ref isUsersChanged, gamers);
+                handler.GameFinishedDealerlooser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
             if ((game.IsFinished) && (!dealerStatus.Equals("loser")))
             {
-                handler.GameFinishedDealerNotlooser(ref usersToUpdate, ref isUsersChanged, gamers);
+                handler.GameFinishedDealerNotlooser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
             if (!game.IsFinished)
             {
-                handler.GameNotFinished(ref usersToUpdate, ref isUsersChanged, gamers);
+                handler.GameNotFinished(gamers, ref usersToUpdate, ref isUsersChanged);
             }
-
             if (isUsersChanged)
             {
                 await _userRepository.Update(usersToUpdate);
