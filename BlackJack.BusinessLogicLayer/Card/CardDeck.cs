@@ -17,24 +17,29 @@ namespace BlackJack.BusinessLogicLayer.CardData
 
         public CardDeck(bool shuffled) : this()
         {
-            var value = Enum.GetValues(typeof(CardValue)).Cast<CardValue>().ToList();
+            var values = Enum.GetValues(typeof(CardValue)).Cast<CardValue>().ToList();
             var suits = Enum.GetValues(typeof(CardSuit)).Cast<CardSuit>().ToList();
-            suits.ForEach(suit => {
-                if (!Enum.GetName(typeof(CardSuit), suit).Equals("None"))
-                    value.ForEach(rank =>
+            suits.ForEach(suit =>
+            {
+                values.ForEach(value =>
+                {
+                    if (value != CardValue.None ||
+                        suit != CardSuit.None)
                     {
-                        if (!Enum.GetName(typeof(CardValue), rank).Equals("None"))
-                            _cards.Add(new Card(
-                            Enum.GetName(typeof(CardValue), rank),
-                            Enum.GetName(typeof(CardSuit), suit)
-                           )
-                        );
+                        _cards.Add(new Card(
+                        Enum.GetName(typeof(CardValue), value),
+                        Enum.GetName(typeof(CardSuit), suit)
+                       )
+                         );
                     }
-                    );
                 }
                 );
+            }
+                );
             if (shuffled)
+            {
                 Shuffle();
+            }
         }
 
         public void Shuffle()
@@ -45,7 +50,9 @@ namespace BlackJack.BusinessLogicLayer.CardData
         public Card DealCard(ref List<Card> usedCards)
         {
             if (!_cards.Any())
+            {
                 throw new InvalidOperationException("Deck is out of cards");
+            }
             List<Card> unuserCards = _cards.Except(usedCards).ToList();
             Card card = unuserCards.ElementAt(0);
             usedCards.Add(card);

@@ -22,8 +22,8 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public async Task<Game> GetLastGame(string userName)
         {
-            var lastGame = $"Select g.* from {_tableName} g,UserInGames u,AspNetUsers a " +
-                $"where u.GameId = g.Id and a.Id = u.UserId and a.Email = @username and g.Date = (Select Max(Date) from Games) ";
+            var lastGame = $@"Select g.* from {_tableName} g,UserInGames u,AspNetUsers a 
+                where u.GameId = g.Id and a.Id = u.UserId and a.Email = @username and g.Date = (Select Max(Date) from Games) ";
             var lastUsersGame = await Connection.QueryFirstOrDefaultAsync<Game>(lastGame, new { username = userName});
             return lastUsersGame;
         }

@@ -1,4 +1,3 @@
-
 import { HistoryComponent } from './history.component';
 import { CommonModule } from '@angular/common';
 import { NgModule, InjectionToken } from '@angular/core';

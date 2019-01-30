@@ -3,8 +3,8 @@
     public enum GamerStatus
     {
         None = 0,
-        loser = 1,
-        winner = 2,
+        Loser = 1,
+        Winner = 2,
         InGame = 3
     }
 }

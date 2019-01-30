@@ -6,8 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {path: '', component: AppComponent},
   {path: 'http://localhost:4200/login', component: LoginComponent}
-
-  
 ];
 
 @NgModule({

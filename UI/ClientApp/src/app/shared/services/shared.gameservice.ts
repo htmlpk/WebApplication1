@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment.local';
 import { IMatch } from 'src/app/shared/interfaces/IMatch';
 import { Observable } from 'rxjs';
 
-
 export class GameService {
   public getGame(http: HttpClient, userName: string): Observable<IMatch> {
     return http.get<IMatch>(environment.apiUrl + '/api/Game/GetLastMatch/'+userName);

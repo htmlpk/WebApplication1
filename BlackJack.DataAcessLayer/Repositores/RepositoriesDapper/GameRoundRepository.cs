@@ -22,7 +22,7 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public async Task<IEnumerable<GameRound>> FindByUserId(Guid id)
         {
-            var roundsByUser = $"Select r.* from {_tableName} r Where UserInGameId = @id";
+            var roundsByUser = $"Select * from {_tableName} Where UserInGameId = @id";
             var rounds = await Connection.QueryAsync<GameRound>(roundsByUser, new { id = id.ToString() });
             return rounds;
         }

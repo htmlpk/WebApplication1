@@ -9,11 +9,10 @@ import { GameService } from 'src/app/shared/services/shared.gameservice';
   providers: [GameService]
 })
 export class ErrorComponent implements OnInit {
-
   public errormessage:string = "";
   constructor(private http: HttpClient, private gameService: GameService) {
   }
-
+  
   ngOnInit():void {
     this.errormessage = localStorage.getItem('error');
   }

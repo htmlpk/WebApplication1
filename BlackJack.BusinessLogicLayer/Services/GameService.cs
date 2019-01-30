@@ -42,7 +42,7 @@ namespace BlackJack.BusinessLogicLayer.Services
 
         public async Task<Guid> CreateGame()
         {
-            Game newGame = new Game() { Date = DateTime.Now, Status  = GameStatus.NotFinished };
+            Game newGame = new Game() { Date = DateTime.Now, Status = GameStatus.NotFinished };
             await _gameRepository.Add(newGame);
             return newGame.Id;
         }
@@ -54,20 +54,11 @@ namespace BlackJack.BusinessLogicLayer.Services
             List<GameRound> cards = new List<GameRound>();
             string userId = await _userRepository.GetUserId(userName);
             List<string> botsIds = (await _userRepository.GetBotsIds()).ToList();
-            for (var i = 0; i <= countOfBots; i++)
+            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
+            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "BotDealer", IsDealer = true, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[5] });
+            for (var i = 2; i <= countOfBots; i++)
             {
-                if (i == 0)
-                {
-                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
-                }
-                if (i == 1)
-                {
-                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "BotDealer", IsDealer = true, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[5] });
-                }
-                if (i > 1)
-                {
-                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "Bot" + i, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i - 2] });
-                }
+                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "Bot" + i, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i - 2] });
             }
             await _userRepository.Add(gamers);
             return gamers;
@@ -136,20 +127,33 @@ namespace BlackJack.BusinessLogicLayer.Services
                 if ((gamer.Name.Contains("Bot")) && (!gamer.IsFinished))
                 {
                     var newCard = DealCardFromDeck(ref usedCards);
-                    var newRaund = new GameRound() { GameId = lastMatch.Game.Id, Id = Guid.NewGuid(), Points = newCard.Points, Suit = newCard.Suit, Value = newCard.Value, UserInGameId = gamer.Id, RoundNumber = lastMatch.Game.CountOfRounds + 1 };
+                    var newRaund = new GameRound() {
+                        GameId = lastMatch.Game.Id,
+                        Points = newCard.Points,
+                        Suit = newCard.Suit,
+                        Value = newCard.Value,
+                        UserInGameId = gamer.Id,
+                        RoundNumber = lastMatch.Game.CountOfRounds + 1 };
                     cardsToAdd.Add(newRaund);
                 }
                 if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (isUserNeedCard))
                 {
                     var newCard = DealCardFromDeck(ref usedCards);
-                    var newRaund = new GameRound() { GameId = lastMatch.Game.Id, Id = Guid.NewGuid(),
-                        Points = newCard.Points, Suit = newCard.Suit, Value = newCard.Value, UserInGameId = gamer.Id,
-                        RoundNumber = lastMatch.Game.CountOfRounds + 1 };
+                    var newRaund = new GameRound()
+                    {
+                        GameId = lastMatch.Game.Id,
+                        Id = Guid.NewGuid(),
+                        Points = newCard.Points,
+                        Suit = newCard.Suit,
+                        Value = newCard.Value,
+                        UserInGameId = gamer.Id,
+                        RoundNumber = lastMatch.Game.CountOfRounds + 1
+                    };
                     cardsToAdd.Add(newRaund);
                 }
                 if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (!isUserNeedCard))
                 {
-                    user = gamer; 
+                    user = gamer;
                 }
             }
 
@@ -214,11 +218,11 @@ namespace BlackJack.BusinessLogicLayer.Services
             var maxGamerPoints = gamers.Select(data => data.Points).Where(data => data <= 21).Max();
             var handler = new GamersPointsHelper(gamers, dealerPoints, dealerStatus, maxGamerPoints);
             var usersToUpdate = new List<UserInGame>();
-            if ((game.Status==GameStatus.Finished)&&(dealerStatus == GamerStatus.loser))
+            if ((game.Status == GameStatus.Finished) && (dealerStatus == GamerStatus.Loser))
             {
                 handler.GameFinishedDealerloser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
-            if ((game.Status == GameStatus.Finished) && (dealerStatus != GamerStatus.loser))
+            if ((game.Status == GameStatus.Finished) && (dealerStatus != GamerStatus.Loser))
             {
                 handler.GameFinishedDealerNotloser(gamers, ref usersToUpdate, ref isUsersChanged);
             }

@@ -11,7 +11,6 @@ import { HttpModule } from '@angular/http'
 import { ParamInterceptor } from './shared/services/shared.interceptor';
 import { GameService } from 'src/app/shared/services/shared.gameservice';
 
-
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: 'full' },
   { path: 'game', component: GameComponent },

@@ -60,7 +60,5 @@ export class HistoryComponent {
   redirectToMain() {
     this.router.navigate(['/']);
   }
-
-
 }
 

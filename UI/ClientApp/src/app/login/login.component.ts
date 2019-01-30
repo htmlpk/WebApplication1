@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { LoginService } from 'src/app/shared/services/shared.loginservice';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
@@ -12,12 +10,10 @@ import { Router } from '@angular/router';
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-
   countofbots: string = '1';
   users: string[];
   username: string;
   token: string;
-
   nomer: number;
   constructor(private http: HttpClient, private router: Router, private loginservice: LoginService) {
   }

@@ -74,10 +74,14 @@ namespace BlackJack.BusinessLogicLayer.CardData
         public override bool Equals(object obj)
         {
             if ((object)this == obj)
+            {
                 return true;
+            }
             var other = obj as Card;
             if ((object)other == null)
+            {
                 return false;
+            }
             return EqualsHelper(this, other);
         }
         protected static bool EqualsHelper(Card first, Card second) =>

@@ -14,7 +14,5 @@ export class ParamInterceptor implements HttpInterceptor {
             return next.handle(paramReq);
         } 
             return next.handle(req);
-        
-
     }
 }

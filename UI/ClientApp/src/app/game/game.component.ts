@@ -23,7 +23,6 @@ export class GameComponent implements OnInit {
     rounds: [],
     gamers: [],
   };
-
   cardUrl: string = environment.imageUrl;
   username: string = "q";
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlackJack.DataAcсessLayer.Enums
+﻿namespace BlackJack.DataAcсessLayer.Enums
 {
     public enum GameStatus
     {
