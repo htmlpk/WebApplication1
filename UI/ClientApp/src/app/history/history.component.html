@@ -1,5 +1,4 @@
 <div style="text-align:center">
-
     <div *ngFor="let match of matches">
         <div>
             || Date of game - {{match.date | date:'yyyy-MM-dd'}}, time - {{match.date | date:'hh:mm'}} ||
@@ -15,19 +14,13 @@
                         <div *ngFor="let round of currentMatch.rounds">
                             <div *ngIf="round.userInGameId==gamer.id">
                                 <img src="../../assets/{{round.suit}}-{{round.value}}.png">
-                                Received in round {{card.raundNumber+1}} 
+                                Received in round {{round.roundNumber+1}}
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
     <button (click)="redirectToMain()">Go to main</button>
-
 </div>

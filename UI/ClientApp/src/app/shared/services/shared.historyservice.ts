@@ -9,10 +9,10 @@ export class HistoryService {
 
 
   public gethistory(http: HttpClient, userName: string): Observable<Game[]> {
-    return http.get<Game[]>(environment.apiUrl+'/api/History/')
+    return http.get<Game[]>(environment.apiUrl+'/api/History/GetAllGames')
   };
 
   public getGameDetails(http: HttpClient, id: Guid): Observable<IMatch> {
-    return http.get<IMatch>(environment.apiUrl+'/api/History/'+id);
+    return http.get<IMatch>(environment.apiUrl+'/api/History/GetMatchById/'+id);
   };
 }

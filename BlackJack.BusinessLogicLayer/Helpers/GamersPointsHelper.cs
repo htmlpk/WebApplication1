@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlackJack.BusinessLogicLayer
 {
-    class GamersPointsHandler
+    class GamersPointsHelper
     {
         private const int PointsToLoose = 22;
         private const int PointsToFinish = 17;
@@ -12,7 +12,7 @@ namespace BlackJack.BusinessLogicLayer
         private string _dealerStatus = null;
         private int _maxGamerPoints = 0;
 
-        public GamersPointsHandler(IEnumerable<UserInGame> gamers, int dealerPoints, string dealerStatus, int maxGamerPoints)
+        public GamersPointsHelper(IEnumerable<UserInGame> gamers, int dealerPoints, string dealerStatus, int maxGamerPoints)
         {
             _dealerPoints = dealerPoints;
             _dealerStatus = dealerStatus;

@@ -15,13 +15,7 @@ import { Router } from '@angular/router';
   providers: [HistoryService]
 })
 export class HistoryComponent {
-
-
-
   matches: Game[];
-
-  username: string = "qwe";
-
   currentMatch: IMatch = {
     game: {
       id: Guid.create(),
@@ -38,7 +32,7 @@ export class HistoryComponent {
   }
 
   getHistory(): void {
-    this.historyService.gethistory(this.http, this.username).subscribe(result => {
+    this.historyService.gethistory(this.http, "").subscribe(result => {
       this.matches = result
     }, error => console.error(error));
   }
@@ -46,6 +40,7 @@ export class HistoryComponent {
   getGameDetails(id: Guid): void {
     this.historyService.getGameDetails(this.http, id).subscribe(result => {
       this.currentMatch = result
+      console.log(result);
     }, error => console.error(error));
   }
 

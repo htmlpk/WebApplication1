@@ -10,7 +10,7 @@ namespace BlackJack.DataAccessLayer.Entities
         public Guid GameId { get; set; }
         [ForeignKey("Id")]
         public Guid UserInGameId { get; set; }
-        public int RaundNumber { get; set; }
+        public int RoundNumber { get; set; }
         public string Value { get; set; }
         public string Suit { get; set; }
         public int Points { get; set; }

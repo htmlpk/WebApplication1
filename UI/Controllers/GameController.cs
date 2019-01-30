@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BlackJack.UI.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class GameController : Controller
     {
         private IGameService _gameService;
@@ -19,36 +19,31 @@ namespace BlackJack.UI.Controllers
 
         [Authorize]
         [HttpGet("{user}")]
-        public async Task<Match> Get(string user)
+        public async Task<IActionResult> GetLastMatch(string user)
         {
             try
             {
-                return await _gameService.GetLastMatch(User.Identity.Name);
+                var lastMatch =  await _gameService.GetLastMatch(User.Identity.Name);
+                return Ok(lastMatch);
             }
             catch (Exception e)
             {
-                throw;
+                return BadRequest("Something went wrong!");
             }
         }
 
         [HttpPut("{username}")]
-        public async Task<Match> Put([FromBody] bool isCardNeed, string userName = null)
+        public async Task<IActionResult> NextRound([FromBody] bool isCardNeed, string userName = null)
         {
             try
             {
-                return await _gameService.NextRound(User.Identity.Name, isCardNeed);
+                var result = await _gameService.NextRound(User.Identity.Name, isCardNeed);
+                return Ok(result);
             }
             catch (Exception e)
             {
-                throw;
+                return BadRequest("Something went wrong!");
             }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<Match> Delete(Guid id)
-        {
-            var match = await _gameService.GetMatchById(id);
-            return match;
         }
     }
 }

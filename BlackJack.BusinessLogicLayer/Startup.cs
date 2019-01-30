@@ -23,9 +23,9 @@ namespace BlackJack.BusinessLogicLayer
         public static void SetEntityFramework(IServiceCollection serviceCollection, string connectionString)
         {
             // Repository EF
-            serviceCollection.AddScoped<IGameRepository, GameRoundsEFRepository>();
+            serviceCollection.AddScoped<IGameRepository, GameEFRepository>();
             serviceCollection.AddScoped<IUserRepository, UserEFRepository>();
-            serviceCollection.AddScoped<ICardRepository, CardEFRepository>();
+            serviceCollection.AddScoped<ICardRepository, GameRoundEFRepository>();
             // Services
             serviceCollection.AddScoped<IGameService, GameService>();
         }

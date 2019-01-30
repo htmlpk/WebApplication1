@@ -14,7 +14,6 @@ namespace BlackJack.DataAccessLayer.Repository
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         private string _connectionString;
-        private IDbConnection _connection;
         protected readonly string _tableName;
 
         protected IDbConnection Connection

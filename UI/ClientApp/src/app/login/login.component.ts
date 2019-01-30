@@ -29,33 +29,37 @@ export class LoginComponent implements OnInit {
   public getUsersName(): void {
     this.loginservice.getUsersName(this.http).subscribe(result => {
       this.users = result;
-    }, error => {console.error(error); this.router.navigate(['/error']);});
+    }, error => {
+      console.error(error);
+      localStorage.setItem('error', JSON.stringify(error['error']));
+      this.router.navigate(['/error']);
+    });
   }
 
   public login(): void {
     this.loginservice.login(this.http, this.username).subscribe(result => {
-      localStorage.setItem('token', this.token);
-      this.token = result;
-    }, error => {console.error(error); this.router.navigate(['/error']);});
+      localStorage.setItem('token', JSON.stringify(result));
+    }, error => {
+      console.error(error);
+      localStorage.setItem('error', JSON.stringify(error['error']));
+      this.router.navigate(['/error']);
+    });
   }
 
   public startGame(): void {
-    this.loginservice.login(this.http, this.username).subscribe(result => {
-      this.token = result;
-      localStorage.setItem('token', this.token);
-      console.log(localStorage.getItem('token'));
-    }, error => console.error(error));
+    this.login();
     this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
       this.router.navigate(['/game'])
-    }, error => {console.error(error); this.router.navigate(['/error']);});;
+    }, error => {
+      console.error(error);
+      localStorage.setItem('error', JSON.stringify(error['error']));
+      this.router.navigate(['/error']);
+    });
   }
 
   public watchHistory(): void {
-    this.loginservice.login(this.http, this.username).subscribe(result => {
-      this.token = result;
-      localStorage.setItem('token', this.token);
-      this.router.navigate(['/history']);
-    }, error => {console.error(error); this.router.navigate(['/error']);});
+    this.login();
+    this.router.navigate(['/history']);
   }
 }
 

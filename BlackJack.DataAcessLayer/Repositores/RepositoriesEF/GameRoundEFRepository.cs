@@ -8,25 +8,28 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public class CardEFRepository : BaseEFRepository<GameRound>, ICardRepository
+    public class GameRoundEFRepository : BaseEFRepository<GameRound>, ICardRepository
     {
-        public CardEFRepository(ApplicationDbContext database)
+        public GameRoundEFRepository(ApplicationDbContext database)
             :base(database)
         {
         }
 
         public async Task<GameRound> FindById(string id)
         {
-            return await _database.GameRounds.Where(item => item.Id == Guid.Parse(id)).FirstOrDefaultAsync();
+            var roundsById = await _database.GameRounds.Where(item => item.Id == Guid.Parse(id)).FirstOrDefaultAsync();
+            return roundsById;
         }
         public async Task<IEnumerable<GameRound>> FindByGameId(Guid id)
         {
-            return await _database.GameRounds.Where(item=>item.GameId == id).ToListAsync();
+            var roundsByGame = await _database.GameRounds.Where(item => item.GameId == id).ToListAsync();
+            return roundsByGame;
         }
 
         public async Task<IEnumerable<GameRound>> FindByUserId(Guid id)
         {
-            return await _database.GameRounds.Where(item => item.UserInGameId == id).ToListAsync();
+            var roundsByUser = await _database.GameRounds.Where(item => item.UserInGameId == id).ToListAsync();
+            return roundsByUser;
         }
     }
 }

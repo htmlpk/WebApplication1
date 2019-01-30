@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.UI.Controllers
 {
-
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class HistoryController : Controller
     {
@@ -20,27 +19,31 @@ namespace BlackJack.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Game>> Get()
+        public async Task<IActionResult> GetAllGames()
         {
             try
             {
-                var jwtUsername = User.Identity.Name;
-                var a = await _gameService.GetAll(jwtUsername);
-                return await _gameService.GetAll(jwtUsername);
+                var allGames = await _gameService.GetAll(User.Identity.Name);
+                return Ok(allGames);
             }
             catch (Exception e)
             {
-
-                throw;
+                return BadRequest("Something went wrong!");
             }
-           
         }
 
         [HttpGet("{id}")]
-        public async Task<Match> Get(Guid id)
+        public async Task<IActionResult> GetMatchById(Guid id)
         {
-            var match = await _gameService.GetMatchById(id);
-            return match;
+            try
+            {
+                var match = await _gameService.GetMatchById(id);
+                return Ok(match);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
     }
 }
