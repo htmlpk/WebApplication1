@@ -3,5 +3,5 @@ export class Game {
   id:Guid;
     date: Date;
     countOfRounds: number;
-    isFinished: boolean;
+    status: number;
   }

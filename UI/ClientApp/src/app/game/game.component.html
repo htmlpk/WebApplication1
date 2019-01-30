@@ -1,28 +1,32 @@
 <div>
   <div style="border:1px black">
-    <div [ngSwitch]="match.game.isFinished">
-      <div *ngSwitchCase=false>In progress</div>
-      <div *ngSwitchCase=true>Finished</div>
+    <div [ngSwitch]="match.game.status">
+      <div *ngSwitchCase=2>In progress</div>
+      <div *ngSwitchCase=1>Finished</div>
     </div>
     <div style="border:1px black">Date of game - {{match.game.date | date:'dd-MM-yyyy'}}, time - {{match.game.date |
       date:'hh:mm'}} </div>
   </div>
   <div style="text-align:center" *ngFor="let gamer of match.gamers">
     Name - {{gamer.name}}<br>
-    <div *ngIf="match.game.isFinished==true||gamer.name.indexOf('Bot')!=0">
+    <div *ngIf="match.game.status==1||gamer.name.indexOf('Bot')!=0">
       Points - {{gamer.points}} points.<br>
-      Gamer status - {{gamer.gamerStatus}}<br>
+      <div [ngSwitch]="gamer.gamerStatus">
+        <div *ngSwitchCase=1> Gamer status - Loser</div>
+        <div *ngSwitchCase=2> Gamer status - Winner</div>
+        <div *ngSwitchCase=3> Gamer status - In game</div>
+      </div>
     </div>
     <div>
       <div *ngFor="let round of match.rounds">
         <div *ngIf="round.userInGameId==gamer.id">
-          <img *ngIf="match.game.isFinished==true" src="../../assets/{{round.suit}}-{{round.value}}.png">
-          <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')!=0" src="../../assets/{{round.suit}}-{{round.value}}.png">
-          <img *ngIf="match.game.isFinished==false&&gamer.name.indexOf('Bot')==0" src="../../assets/untitled.png">
+          <img *ngIf="match.game.status==1" src="../../assets/{{round.suit}}-{{round.value}}.png">
+          <img *ngIf="(match.game.status!==1)&&(gamer.name.indexOf('Bot')!=0)" src="../../assets/{{round.suit}}-{{round.value}}.png">
+          <img *ngIf="(match.game.status!==1)&&(gamer.name.indexOf('Bot')==0)" src="../../assets/untitled.png">
         </div>
       </div>
     </div>
-    <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.isFinished!='1')" (click)="nextRound()">Get card</button>
-    <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.isFinished!='1')" (click)="stopGame()">Enough!</button>
+    <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.status!=1)" (click)="nextRound()">Get card</button>
+    <button *ngIf="(gamer.name.indexOf('Bot')!=0)&&(match.game.status!=1)" (click)="stopGame()">Enough!</button>
   </div>
 </div>

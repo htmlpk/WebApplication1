@@ -1,6 +1,7 @@
 ﻿using BlackJack.BusinessLogicLayer.CardData;
 using BlackJack.DataAccessLayer.Entities;
 using BlackJack.DataAccessLayer.Repository;
+using BlackJack.DataAcсessLayer.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace BlackJack.BusinessLogicLayer.Services
 
         public async Task<Guid> CreateGame()
         {
-            Game newGame = new Game() { Date = DateTime.Now, IsFinished = false };
+            Game newGame = new Game() { Date = DateTime.Now, Status  = GameStatus.NotFinished };
             await _gameRepository.Add(newGame);
             return newGame.Id;
         }
@@ -57,15 +58,15 @@ namespace BlackJack.BusinessLogicLayer.Services
             {
                 if (i == 0)
                 {
-                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = "InGame", Points = 0, UserId = userId });
+                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
                 }
                 if (i == 1)
                 {
-                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "BotDealer", IsDealer = true, IsFinished = false, GamerStatus = "InGame", Points = 0, UserId = botsIds[5] });
+                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "BotDealer", IsDealer = true, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[5] });
                 }
                 if (i > 1)
                 {
-                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "Bot" + i, IsDealer = false, IsFinished = false, GamerStatus = "InGame", Points = 0, UserId = botsIds[i - 2] });
+                    gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "Bot" + i, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i - 2] });
                 }
             }
             await _userRepository.Add(gamers);
@@ -166,7 +167,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             await UpdateGameStatus(userName);
             await UpdateUsersStatus(userName);
 
-            if (!isUserNeedCard && !lastMatch.Game.IsFinished)
+            if (!isUserNeedCard && lastMatch.Game.Status != GameStatus.Finished)
             {
                 await NextRound(userName, false);
                 lastMatch = await GetLastMatch(userName);
@@ -197,7 +198,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             }
             if (isGameChanged)
             {
-                game.IsFinished = true;
+                game.Status = GameStatus.Finished;
                 await _gameRepository.Update(game);
                 await UpdateUsersStatus(userName);
             }
@@ -213,15 +214,15 @@ namespace BlackJack.BusinessLogicLayer.Services
             var maxGamerPoints = gamers.Select(data => data.Points).Where(data => data <= 21).Max();
             var handler = new GamersPointsHelper(gamers, dealerPoints, dealerStatus, maxGamerPoints);
             var usersToUpdate = new List<UserInGame>();
-            if ((game.IsFinished)&&(dealerStatus.Equals("loser")))
+            if ((game.Status==GameStatus.Finished)&&(dealerStatus == GamerStatus.loser))
             {
                 handler.GameFinishedDealerloser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
-            if ((game.IsFinished) && (!dealerStatus.Equals("loser")))
+            if ((game.Status == GameStatus.Finished) && (dealerStatus != GamerStatus.loser))
             {
                 handler.GameFinishedDealerNotloser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
-            if (!game.IsFinished)
+            if (game.Status != GameStatus.Finished)
             {
                 handler.GameNotFinished(gamers, ref usersToUpdate, ref isUsersChanged);
             }

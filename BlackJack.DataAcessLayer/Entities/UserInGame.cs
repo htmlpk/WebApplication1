@@ -1,4 +1,5 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using BlackJack.DataAcсessLayer.Enums;
+using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,7 @@ namespace BlackJack.DataAccessLayer.Entities
         public bool IsDealer { get; set; }
         public bool IsFinished { get; set; }
         public int Points { get; set; }
-        public string GamerStatus { get; set; }
+        public GamerStatus GamerStatus { get; set; }
         [Computed]
         public virtual User ApplicationUser { get; set; }
         [Computed]

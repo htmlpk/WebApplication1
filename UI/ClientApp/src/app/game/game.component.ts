@@ -17,7 +17,7 @@ export class GameComponent implements OnInit {
     game: {
       id:null,
       countOfRounds: 0,
-      isFinished: null,
+      status: 0,
       date: new Date(),
     },
     rounds: [],
@@ -36,7 +36,8 @@ export class GameComponent implements OnInit {
 
   getGame():void {
     this.gameService.getGame(this.http, this.username).subscribe(result => {  
-      this.match = result;      
+      this.match = result;    
+      console.log(this.match);
     }, error => { console.error(error); this.router.navigate(['/error']); });
   }
 
