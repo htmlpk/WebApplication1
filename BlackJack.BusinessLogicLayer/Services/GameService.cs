@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace BlackJack.BusinessLogicLayer.Services
 {
-
     public class GameService : IGameService
     {
         private const int CountOfStartCards = 2;
@@ -46,7 +45,6 @@ namespace BlackJack.BusinessLogicLayer.Services
             await _gameRepository.Add(newGame);
             return newGame.Id;
         }
-
 
         public async Task<List<UserInGame>> CreateUsers(Guid newGameGuid, int countOfBots, string userName)
         {
@@ -245,7 +243,6 @@ namespace BlackJack.BusinessLogicLayer.Services
             var match = new Match() { Game = game, Gamers = gamers, Rounds = cards };
             return match;
         }
-
     }
 }
 

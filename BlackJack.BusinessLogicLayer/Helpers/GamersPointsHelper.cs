@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BlackJack.BusinessLogicLayer
 {
-    class GamersPointsHelper
+    public class GamersPointsHelper
     {
         private const int PointsToLoose = 22;
         private const int PointsToFinish = 17;
