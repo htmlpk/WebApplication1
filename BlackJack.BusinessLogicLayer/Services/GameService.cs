@@ -11,6 +11,7 @@ namespace BlackJack.BusinessLogicLayer.Services
 {
     public class GameService : IGameService
     {
+        private const int PointsToNotLose = 21;
         private const int CountOfStartCards = 2;
         private IGameRepository _gameRepository;
         private IUserRepository _userRepository;
@@ -49,6 +50,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             var cardsToAdd = new List<GameRound>();
             UserInGame user = null;
             List<Card> usedCards = MapRaundToCard(raunds);
+            List<UserInGame> usersToUpdatePoints = new List<UserInGame>();
             foreach (var gamer in lastMatch.Gamers)
             {
                 if ((gamer.Name.Contains("Bot")) && (!gamer.IsFinished))
@@ -64,6 +66,7 @@ namespace BlackJack.BusinessLogicLayer.Services
                         RoundNumber = lastMatch.Game.CountOfRounds + 1
                     };
                     cardsToAdd.Add(newRaund);
+                    usersToUpdatePoints.Add(gamer);
                 }
                 if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (isUserNeedCard))
                 {
@@ -79,6 +82,7 @@ namespace BlackJack.BusinessLogicLayer.Services
                         RoundNumber = lastMatch.Game.CountOfRounds + 1
                     };
                     cardsToAdd.Add(newRaund);
+                    usersToUpdatePoints.Add(gamer);
                 }
                 if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (!isUserNeedCard))
                 {
@@ -96,7 +100,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             }
 
             await _cardRepository.Add(cardsToAdd);
-            await UpdateUsersPoints(lastMatch.Game.Id);
+            await UpdateUsersPoints(usersToUpdatePoints,lastMatch.Game.Id);
             await UpdateGameStatus(userName);
             await UpdateUsersStatus(userName);
 
@@ -149,7 +153,7 @@ namespace BlackJack.BusinessLogicLayer.Services
                 }
             }
             await _cardRepository.Add(cardsToAdd);
-            await UpdateUsersPoints(gameId);
+            await UpdateUsersPoints(gamers,gameId);
         }
 
         private Card DealCardFromDeck(ref List<Card> usedCards)
@@ -158,9 +162,8 @@ namespace BlackJack.BusinessLogicLayer.Services
             return deck.DealCard(ref usedCards);
         }
 
-        private async Task UpdateUsersPoints(Guid gameId)
+        private async Task UpdateUsersPoints(IEnumerable<UserInGame> gamers,Guid gameId)
         {
-            var gamers = await _userRepository.FindByGameId(gameId);
             var cards = await _cardRepository.FindByGameId(gameId);
             List<UserInGame> gamersToUpdate = new List<UserInGame>();
             foreach (var gamer in gamers)
@@ -190,15 +193,15 @@ namespace BlackJack.BusinessLogicLayer.Services
 
         private async Task UpdateGameStatus(string userName)
         {
-            bool isGameChanged = false;
+            bool isGameFinished = false;
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
             var countOfFinished = gamers.Where(data => data.IsFinished).Count();
             if (gamers.Count() == countOfFinished)
             {
-                isGameChanged = true;
+                isGameFinished = true;
             }
-            if (isGameChanged)
+            if (isGameFinished)
             {
                 game.Status = GameStatus.Finished;
                 await _gameRepository.Update(game);
@@ -213,7 +216,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             var gamers = await _userRepository.FindByGameId(game.Id);
             var dealerStatus = gamers.Where(data => data.IsDealer).Select(data => data.GamerStatus).FirstOrDefault();
             var dealerPoints = gamers.Where(data => data.IsDealer).Select(data => data.Points).FirstOrDefault();
-            var maxGamerPoints = gamers.Select(data => data.Points).Where(data => data <= 21).Max();
+            var maxGamerPoints = gamers.Select(data => data.Points).Where(data => data <= PointsToNotLose).Max();
             var handler = new GamersPointsHelper(gamers, dealerPoints, dealerStatus, maxGamerPoints);
             var usersToUpdate = new List<UserInGame>();
             if ((game.Status == GameStatus.Finished) && (dealerStatus == GamerStatus.Loser))
