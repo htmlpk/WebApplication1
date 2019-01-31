@@ -43,9 +43,15 @@ export class LoginComponent implements OnInit {
   }
 
   public startGame(): void {
-    this.login();
-    this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
-      this.router.navigate(['/game'])
+    this.loginservice.login(this.http, this.username).subscribe(result => {
+      localStorage.setItem('token', JSON.stringify(result));
+      this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
+        this.router.navigate(['/game'])
+      }, error => {
+        console.error(error);
+        localStorage.setItem('error', JSON.stringify(error['error']));
+        this.router.navigate(['/error']);
+      });
     }, error => {
       console.error(error);
       localStorage.setItem('error', JSON.stringify(error['error']));

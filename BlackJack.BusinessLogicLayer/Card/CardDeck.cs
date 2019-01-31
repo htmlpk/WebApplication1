@@ -23,8 +23,8 @@ namespace BlackJack.BusinessLogicLayer.CardData
             {
                 values.ForEach(value =>
                 {
-                    if (value != CardValue.None ||
-                        suit != CardSuit.None)
+                    if (!Enum.GetName(typeof(CardValue), value).Equals("None")
+                    && !Enum.GetName(typeof(CardSuit), suit).Equals("None"))
                     {
                         _cards.Add(new Card(
                         Enum.GetName(typeof(CardValue), value),

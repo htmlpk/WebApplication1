@@ -1,4 +1,5 @@
 ﻿using BlackJack.BusinessLogicLayer;
+using BlackJack.UI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,9 +18,22 @@ namespace BlackJack.UI.Controllers
             _gameService = gameService;
         }
 
-        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> StartGame([FromBody]StartGameModel model)
+        {
+            try
+            {
+                await _gameService.StartGame(model.UserName, model.CountOfBots);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Something went wrong!");
+            }
+        }
+
         [HttpGet("{user}")]
-        public async Task<IActionResult> GetLastMatch(string user)
+        public async Task<IActionResult> GetLastMatch(string user=null)
         {
             try
             {

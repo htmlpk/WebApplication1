@@ -18,6 +18,7 @@ namespace BlackJack.BusinessLogicLayer
             serviceCollection.AddScoped<ICardRepository, GameRoundRepository>(provider => new GameRoundRepository(connectionString));
             // Services
             serviceCollection.AddScoped<IGameService, GameService>();
+            serviceCollection.AddScoped<IHistoryService, HistoryService>();
         }
 
         public static void SetEntityFramework(IServiceCollection serviceCollection, string connectionString)
@@ -28,6 +29,7 @@ namespace BlackJack.BusinessLogicLayer
             serviceCollection.AddScoped<ICardRepository, GameRoundEFRepository>();
             // Services
             serviceCollection.AddScoped<IGameService, GameService>();
+            serviceCollection.AddScoped<IHistoryService, HistoryService>();
         }
     }
 }

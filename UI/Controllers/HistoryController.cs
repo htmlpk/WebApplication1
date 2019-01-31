@@ -1,8 +1,6 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlackJack.UI.Controllers
@@ -11,11 +9,11 @@ namespace BlackJack.UI.Controllers
     [ApiController]
     public class HistoryController : Controller
     {
-        private IGameService _gameService;
+        private IHistoryService _historyService;
 
-        public HistoryController(IGameService gameService)
+        public HistoryController(IHistoryService historyService)
         {
-            _gameService = gameService;
+            _historyService = historyService;
         }
 
         [HttpGet]
@@ -23,7 +21,7 @@ namespace BlackJack.UI.Controllers
         {
             try
             {
-                var allGames = await _gameService.GetAll(User.Identity.Name);
+                var allGames = await _historyService.GetAll(User.Identity.Name);
                 return Ok(allGames);
             }
             catch (Exception e)
@@ -37,7 +35,7 @@ namespace BlackJack.UI.Controllers
         {
             try
             {
-                var match = await _gameService.GetMatchById(id);
+                var match = await _historyService.GetMatchById(id);
                 return Ok(match);
             }
             catch (Exception e)

@@ -17,6 +17,6 @@ export class LoginService {
     let model = new StartGameModel();
     model.userName = username;
     model.countOfBots = parseInt(countofbots);
-    return http.post(environment.apiUrl + '/api/Account/StartGame', model);
+    return http.post(environment.apiUrl + '/api/Game/StartGame/', model);
   }
 }

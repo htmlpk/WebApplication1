@@ -1,7 +1,6 @@
 ﻿using BlackJack.BusinessLogicLayer;
 using BlackJack.DataAccessLayer.Entities;
 using BlackJack.UI.Helpers;
-using BlackJack.UI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -54,20 +53,6 @@ namespace BlackJack.UI.Controllers
             catch (Exception e)
             {
                 return BadRequest("Cant login now. Try later");
-            }
-        }
-        
-        [HttpPost]
-        public async Task<IActionResult> StartGame(StartGameModel model)
-        {
-            try
-            {
-                await _gameService.StartGame(model.UserName, model.CountOfBots);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest("Something went wrong!");
             }
         }
     }
