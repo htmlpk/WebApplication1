@@ -53,8 +53,8 @@ namespace BlackJack.BusinessLogicLayer.CardData
             {
                 throw new InvalidOperationException("Deck is out of cards");
             }
-            List<Card> unuserCards = _cards.Except(usedCards).ToList();
-            Card card = unuserCards.ElementAt(0);
+            List<Card> unUsedCards = _cards.Except(usedCards).ToList();
+            Card card = unUsedCards.ElementAt(0);
             usedCards.Add(card);
             return card;
         }
