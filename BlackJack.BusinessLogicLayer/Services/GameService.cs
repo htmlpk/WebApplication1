@@ -1,7 +1,9 @@
-﻿using BlackJack.BusinessLogicLayer.CardData;
+﻿using AutoMapper;
+using BlackJack.BusinessLogicLayer.CardData;
 using BlackJack.DataAccessLayer.Entities;
 using BlackJack.DataAccessLayer.Repository;
 using BlackJack.DataAcсessLayer.Enums;
+using BlackJack.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,41 +13,45 @@ namespace BlackJack.BusinessLogicLayer.Services
 {
     public class GameService : IGameService
     {
+        private const string BotNamePart = "Bot";
+        private const string BotDealerNamePart = "BotDealer";
         private const int PointsToNotLose = 21;
         private const int CountOfStartCards = 2;
+        private IMapper _mapper;
         private IGameRepository _gameRepository;
         private IUserRepository _userRepository;
         private ICardRepository _cardRepository;
         public string ConnectionString { get; set; }
 
-        public GameService(IGameRepository gameRepository, IUserRepository userRepository, ICardRepository cardRepository)
+        public GameService(IGameRepository gameRepository, IUserRepository userRepository, ICardRepository cardRepository,IMapper mapper)
         {
+            _mapper = mapper;
             _gameRepository = gameRepository;
             _userRepository = userRepository;
             _cardRepository = cardRepository;
         }
 
-        public async Task StartGame(string userName, int countOfBots)
+        public async Task StartGame(StartGameViewModel model)
         {
             var newGameGuid = await CreateGame();
-            var gamers = await CreateUsers(newGameGuid, countOfBots, userName);
+            var gamers = await CreateGamers(newGameGuid, model.CountOfBots, model.UserName);
             await DealTwoStartCards(newGameGuid);
-            await UpdateGameStatus(userName);
-            await UpdateUsersStatus(userName);
+            await UpdateGameStatus(model.UserName);
+            await UpdateUsersStatus(model.UserName);
         }
 
-        public async Task<Match> GetLastMatch(string userName)
+        public async Task<MatchViewModel> GetLastMatch(string userName)
         {
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
             var cards = await _cardRepository.FindByGameId(game.Id);
-            var match = new Match() { Game = game, Gamers = gamers, Rounds = cards };
+            var match = new MatchViewModel() { Game = _mapper.Map(game, new GameViewModel()), Gamers = _mapper.Map(gamers, new List<UserInGameViewModel>()), Rounds = _mapper.Map(cards, new List<RoundViewModel>()) };
             return match;
         }
 
-        public async Task<Match> NextRound(string userName, bool isUserNeedCard)
+        public async Task<MatchViewModel> NextRound(string userName, bool isUserNeedCard)
         {
-            var lastMatch = await GetLastMatch(userName);
+            var lastMatch = await GetLastMatchForNextRound(userName);
             var raunds = await _cardRepository.FindByGameId(lastMatch.Game.Id);
             var cardsToAdd = new List<GameRound>();
             UserInGame user = null;
@@ -53,7 +59,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             List<UserInGame> usersToUpdatePoints = new List<UserInGame>();
             foreach (var gamer in lastMatch.Gamers)
             {
-                if ((gamer.Name.Contains("Bot")) && (!gamer.IsFinished))
+                if ((gamer.Name.Contains(BotNamePart)) && (!gamer.IsFinished))
                 {
                     var newCard = DealCardFromDeck(ref usedCards);
                     var newRaund = new GameRound()
@@ -66,9 +72,9 @@ namespace BlackJack.BusinessLogicLayer.Services
                         RoundNumber = lastMatch.Game.CountOfRounds + 1
                     };
                     cardsToAdd.Add(newRaund);
-                    usersToUpdatePoints.Add(gamer);
+                    usersToUpdatePoints.Add(_mapper.Map(gamer,new UserInGame()));
                 }
-                if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (isUserNeedCard))
+                if ((!gamer.Name.Contains(BotNamePart)) && (!gamer.IsFinished) && (isUserNeedCard))
                 {
                     var newCard = DealCardFromDeck(ref usedCards);
                     var newRaund = new GameRound()
@@ -82,17 +88,17 @@ namespace BlackJack.BusinessLogicLayer.Services
                         RoundNumber = lastMatch.Game.CountOfRounds + 1
                     };
                     cardsToAdd.Add(newRaund);
-                    usersToUpdatePoints.Add(gamer);
+                    usersToUpdatePoints.Add(_mapper.Map(gamer, new UserInGame()));
                 }
-                if ((!gamer.Name.Contains("Bot")) && (!gamer.IsFinished) && (!isUserNeedCard))
+                if ((!gamer.Name.Contains(BotNamePart)) && (!gamer.IsFinished) && (!isUserNeedCard))
                 {
-                    user = gamer;
+                    user = _mapper.Map(gamer, new UserInGame());
                 }
             }
 
             if (user != null)
             {
-                if ((!user.Name.Contains("Bot") && (!user.IsFinished) && (!isUserNeedCard)))
+                if ((!user.Name.Contains(BotNamePart) && (!user.IsFinished) && (!isUserNeedCard)))
                 {
                     user.IsFinished = true;
                     await _userRepository.Update(user);
@@ -107,9 +113,17 @@ namespace BlackJack.BusinessLogicLayer.Services
             if (!isUserNeedCard && lastMatch.Game.Status != GameStatus.Finished)
             {
                 await NextRound(userName, false);
-                lastMatch = await GetLastMatch(userName);
             }
             return await GetLastMatch(userName);
+        }
+
+        private async Task<Match> GetLastMatchForNextRound(string userName)
+        {
+            var game = await _gameRepository.GetLastGame(userName);
+            var gamers = await _userRepository.FindByGameId(game.Id);
+            var cards = await _cardRepository.FindByGameId(game.Id);
+            var match = new Match() { Game = game, Gamers = gamers, Rounds = cards };
+            return match;
         }
 
         private async Task<Guid> CreateGame()
@@ -119,7 +133,7 @@ namespace BlackJack.BusinessLogicLayer.Services
             return newGame.Id;
         }
 
-        private async Task<List<UserInGame>> CreateUsers(Guid newGameGuid, int countOfBots, string userName)
+        private async Task<List<UserInGame>> CreateGamers(Guid newGameGuid, int countOfBots, string userName)
         {
             List<UserInGame> gamers = new List<UserInGame>();
             List<GameRound> cards = new List<GameRound>();
@@ -130,10 +144,10 @@ namespace BlackJack.BusinessLogicLayer.Services
                 throw new Exception("List of bots ids is empty");
             }
             gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
-            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "BotDealer", IsDealer = true, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[botsIds.Count-1] });
+            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotDealerNamePart, IsDealer = true, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[botsIds.Count-1] });
             for (var i = 0; i < countOfBots-1; i++)
             {
-                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = "Bot" + (i+1), IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i] });
+                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotNamePart + (i+1), IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i] });
             }
             await _userRepository.Add(gamers);
             return gamers;
@@ -221,11 +235,11 @@ namespace BlackJack.BusinessLogicLayer.Services
             var usersToUpdate = new List<UserInGame>();
             if ((game.Status == GameStatus.Finished) && (dealerStatus == GamerStatus.Loser))
             {
-                handler.GameFinishedDealerloser(gamers, ref usersToUpdate, ref isUsersChanged);
+                handler.GameFinishedDealerLoser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
             if ((game.Status == GameStatus.Finished) && (dealerStatus != GamerStatus.Loser))
             {
-                handler.GameFinishedDealerNotloser(gamers, ref usersToUpdate, ref isUsersChanged);
+                handler.GameFinishedDealerNotLoser(gamers, ref usersToUpdate, ref isUsersChanged);
             }
             if (game.Status != GameStatus.Finished)
             {

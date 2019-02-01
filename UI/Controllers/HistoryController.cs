@@ -1,4 +1,5 @@
 ﻿using BlackJack.BusinessLogicLayer;
+using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(RequestTypes.Error);
             }
         }
 
@@ -40,7 +41,7 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(RequestTypes.Error);
             }
         }
     }

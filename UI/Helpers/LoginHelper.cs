@@ -13,15 +13,13 @@ namespace BlackJack.UI.Helpers
 {
     public class LoginHelper
     {
-        private readonly AppSettings _appSettings;
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
 
-        public LoginHelper(UserManager<User> userManager, SignInManager<User> signInManager, AppSettings appSettings)
+        public LoginHelper(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _appSettings = appSettings;
         }
 
         public async Task Register(string userName)

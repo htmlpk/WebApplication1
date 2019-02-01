@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using BlackJack.ViewModels;
+using System.Threading.Tasks;
 
 namespace BlackJack.BusinessLogicLayer
 {
     public interface IGameService
     {
-        Task StartGame(string userName, int countOfBots);
-        Task<Match> NextRound(string userName, bool isUserNeedCard);
-        Task<Match> GetLastMatch(string userName);
+        Task StartGame(StartGameViewModel model);
+        Task<MatchViewModel> NextRound(string userName, bool isUserNeedCard);
+        Task<MatchViewModel> GetLastMatch(string userName);
     }
 }

@@ -36,20 +36,19 @@ export class GameComponent implements OnInit {
   getGame():void {
     this.gameService.getGame(this.http, this.username).subscribe(result => {  
       this.match = result;    
-      console.log(this.match);
-    }, error => { console.error(error); this.router.navigate(['/error']); });
+    });
   }
 
   nextRound():void {
     this.gameService.nextRound(this.http, this.username).subscribe(result => {  
       this.match = result;      
-    }, error => { console.error(error); this.router.navigate(['/error']); });
+    });
   }
 
   stopGame():void {
     this.gameService.stopGame(this.http, this.username).subscribe(result => {  
       this.match = result;      
-    }, error => { console.error(error); this.router.navigate(['/error']); });
+    });
   }
 }
 

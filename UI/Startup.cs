@@ -1,4 +1,5 @@
-﻿using BlackJack.BusinessLogicLayer;
+﻿using AutoMapper;
+using BlackJack.BusinessLogicLayer;
 using BlackJack.DataAccessLayer.Context;
 using BlackJack.DataAccessLayer.Entities;
 using BlackJack.UI;
@@ -80,6 +81,14 @@ namespace UI
                 options.Password.RequiredLength = 1;
                 options.Password.RequiredUniqueChars = 0;
             });
+
+            var mappingConvig = new MapperConfiguration(mc=>
+            {
+                mc.AddProfile(new MappersProfile());
+            }
+            );
+            IMapper mapper = mappingConvig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IGameService gameService)

@@ -22,14 +22,14 @@ namespace BlackJack.DataAccessLayer.Repository
         }
         public async Task<IEnumerable<Game>> GetAll(string userName)
         {
-            var allUsersGames = await _database.Games.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicationUser.Email == userName) != null)
+            var allUsersGames = await _database.Games.Where(x => x.UserInGame.FirstOrDefault(y => y.ApplicationUser.Email == userName) != null)
                 .OrderByDescending(t => t.Date).ToListAsync();
             return allUsersGames;
         }
        
         public async Task<Game> GetLastGame(string userName)
         {
-            var lastUsersGame = await _database.Games.Where(item => item.UserInGame.FirstOrDefault(item2 => item2.ApplicationUser.Email == userName) != null)
+            var lastUsersGame = await _database.Games.Where(x => x.UserInGame.FirstOrDefault(y => y.ApplicationUser.Email == userName) != null)
                 .OrderByDescending(t => t.Date).FirstOrDefaultAsync();
             return lastUsersGame;
         }

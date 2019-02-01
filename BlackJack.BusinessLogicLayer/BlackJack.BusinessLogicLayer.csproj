@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlackJack.DataAcessLayer\BlackJack.DataAcсessLayer.csproj" />
+    <ProjectReference Include="..\BlackJack.ViewModels\BlackJack.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

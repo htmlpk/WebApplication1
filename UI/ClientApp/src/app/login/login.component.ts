@@ -25,21 +25,13 @@ export class LoginComponent implements OnInit {
   public getUsersName(): void {
     this.loginservice.getUsersName(this.http).subscribe(result => {
       this.users = result;
-    }, error => {
-      console.error(error);
-      localStorage.setItem('error', JSON.stringify(error['error']));
-      this.router.navigate(['/error']);
-    });
+    })
   }
 
   public login(): void {
     this.loginservice.login(this.http, this.username).subscribe(result => {
       localStorage.setItem('token', JSON.stringify(result));
-    }, error => {
-      console.error(error);
-      localStorage.setItem('error', JSON.stringify(error['error']));
-      this.router.navigate(['/error']);
-    });
+    })
   }
 
   public startGame(): void {
@@ -47,15 +39,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', JSON.stringify(result));
       this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
         this.router.navigate(['/game'])
-      }, error => {
-        console.error(error);
-        localStorage.setItem('error', JSON.stringify(error['error']));
-        this.router.navigate(['/error']);
       });
-    }, error => {
-      console.error(error);
-      localStorage.setItem('error', JSON.stringify(error['error']));
-      this.router.navigate(['/error']);
     });
   }
 

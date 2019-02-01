@@ -28,7 +28,7 @@ namespace BlackJack.DataAccessLayer.Repository
 
         public async Task<IEnumerable<string>> GetBotsIds()
         {
-            var botsIds = await _database.Users.Where(item => item.Email.Contains("Bot")).OrderBy(item2=>item2.Email).Select(item => item.Id).ToListAsync();
+            var botsIds = await _database.Users.Where(x => x.Email.Contains("Bot")).OrderBy(y=>y.Email).Select(item => item.Id).ToListAsync();
             return botsIds;
         }
 

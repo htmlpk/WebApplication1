@@ -32,12 +32,12 @@ namespace BlackJack.UI.Controllers
         {
             try
             {
-                var userNames = _userManager.Users.Where(item => !item.Email.Contains("Bot")).Select(item2 => item2.Email);
+                var userNames = _userManager.Users.Where(x => !x.Email.Contains("Bot")).Select(y => y.Email);
                 return Ok(userNames);
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(RequestTypes.Error);
             }
         }
 
@@ -46,13 +46,13 @@ namespace BlackJack.UI.Controllers
         {
             try
             {
-                var loginService = new LoginHelper(_userManager, _signInManager, _appSettings);
+                var loginService = new LoginHelper(_userManager, _signInManager);
                 var token = await loginService.Login(userName);
                 return Ok(token);
             }
             catch (Exception e)
             {
-                return BadRequest("Cant login now. Try later");
+                return BadRequest(RequestTypes.LoginError);
             }
         }
     }

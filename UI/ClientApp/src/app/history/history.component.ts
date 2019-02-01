@@ -34,14 +34,14 @@ export class HistoryComponent {
   getHistory(): void {
     this.historyService.gethistory(this.http, "").subscribe(result => {
       this.matches = result
-    }, error => console.error(error));
+    });
   }
 
   getGameDetails(id: Guid): void {
     this.historyService.getGameDetails(this.http, id).subscribe(result => {
       this.currentMatch = result
       console.log(result);
-    }, error => console.error(error));
+    });
   }
 
   closeDetails(id: Guid): void {

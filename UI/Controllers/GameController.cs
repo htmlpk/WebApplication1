@@ -1,5 +1,6 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.UI.Models;
+using BlackJack.UI.Helpers;
+using BlackJack.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,21 +20,21 @@ namespace BlackJack.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> StartGame([FromBody]StartGameModel model)
+        public async Task<IActionResult> StartGame([FromBody]StartGameViewModel model)
         {
             try
             {
-                await _gameService.StartGame(model.UserName, model.CountOfBots);
+                await _gameService.StartGame(model);
                 return Ok();
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(RequestTypes.Error);
             }
         }
 
-        [HttpGet("{user}")]
-        public async Task<IActionResult> GetLastMatch(string user=null)
+        [HttpGet]
+        public async Task<IActionResult> GetLastMatch()
         {
             try
             {
@@ -42,12 +43,12 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(RequestTypes.Error);
             }
         }
 
-        [HttpPut("{username}")]
-        public async Task<IActionResult> NextRound([FromBody] bool isCardNeed, string userName = null)
+        [HttpPut]
+        public async Task<IActionResult> NextRound([FromBody] bool isCardNeed)
         {
             try
             {
@@ -56,7 +57,7 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(RequestTypes.Error);
             }
         }
     }
