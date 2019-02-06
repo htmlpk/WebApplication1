@@ -21,14 +21,14 @@ export class ParamInterceptor implements HttpInterceptor {
             const paramReq = req.clone({
                 headers: req.headers.set('Authorization', 'bearer ' + token['access_token']),
             });
-            return next.handle(paramReq).pipe(
-                catchError((error: HttpErrorResponse) => {
-                    console.error(error);
-                    localStorage.setItem('error', JSON.stringify(error['error']));
-                    this.router.navigate(['/error']);
-                    return throwError("errMsg");
-                }));
+            return next.handle(paramReq)
         }
-        return next.handle(req);
+        return next.handle(req).pipe(
+            catchError((error: HttpErrorResponse) => {
+                console.error(error);
+                localStorage.setItem('error', JSON.stringify(error['error']));
+                this.router.navigate(['/error']);
+                return throwError("errMsg");
+            }));;
     }
 }

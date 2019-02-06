@@ -10,7 +10,7 @@ namespace BlackJack.UI.Controllers
 {
     [Authorize]
     [Route("api/[controller]/[action]")]
-    public class GameController : Controller
+    public class GameController : BaseController
     {
         private IGameService _gameService;
 
@@ -29,7 +29,7 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(RequestTypes.Error);
+                return BadRequest(BadRequestTypes.Error);
             }
         }
 
@@ -43,7 +43,7 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(RequestTypes.Error);
+                return BadRequest(BadRequestTypes.Error);
             }
         }
 
@@ -57,7 +57,7 @@ namespace BlackJack.UI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(RequestTypes.Error);
+                return BadRequest(BadRequestTypes.Error);
             }
         }
     }

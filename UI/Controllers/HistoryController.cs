@@ -1,5 +1,4 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -7,8 +6,7 @@ using System.Threading.Tasks;
 namespace BlackJack.UI.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class HistoryController : Controller
+    public class HistoryController : BaseController
     {
         private IHistoryService _historyService;
 
@@ -20,29 +18,15 @@ namespace BlackJack.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllGames()
         {
-            try
-            {
                 var allGames = await _historyService.GetAll(User.Identity.Name);
                 return Ok(allGames);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(RequestTypes.Error);
-            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMatchById(Guid id)
         {
-            try
-            {
                 var match = await _historyService.GetMatchById(id);
                 return Ok(match);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(RequestTypes.Error);
-            }
         }
     }
 }

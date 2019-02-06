@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginService } from 'src/app/shared/services/shared.loginservice';
+import { LoginService } from 'src/app/shared/services/login.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,6 @@ export class LoginComponent implements OnInit {
   users: string[];
   username: string;
   token: string;
-  nomer: number;
   constructor(private http: HttpClient, private router: Router, private loginservice: LoginService) {
   }
 
@@ -23,21 +22,21 @@ export class LoginComponent implements OnInit {
   }
 
   public getUsersName(): void {
-    this.loginservice.getUsersName(this.http).subscribe(result => {
+    this.loginservice.getUsersName().subscribe(result => {
       this.users = result;
     })
   }
 
   public login(): void {
-    this.loginservice.login(this.http, this.username).subscribe(result => {
+    this.loginservice.login(this.username).subscribe(result => {
       localStorage.setItem('token', JSON.stringify(result));
     })
   }
 
   public startGame(): void {
-    this.loginservice.login(this.http, this.username).subscribe(result => {
+    this.loginservice.login(this.username).subscribe(result => {
       localStorage.setItem('token', JSON.stringify(result));
-      this.loginservice.startGame(this.http, this.username, this.countofbots).subscribe(result => {
+      this.loginservice.startGame(this.username, this.countofbots).subscribe(result => {
         this.router.navigate(['/game'])
       });
     });
@@ -48,8 +47,3 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/history']);
   }
 }
-
-
-
-
-

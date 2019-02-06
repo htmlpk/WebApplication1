@@ -1,12 +1,15 @@
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { NgModule, Component } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ErrorComponent } from 'src/app/error/error.component';
+import { GameComponent } from 'src/app/game/game.component';
+import { LoginComponent } from 'src/app/login/login.component';
 
 const routes: Routes = [
-  {path: '', component: AppComponent},
-  {path: 'http://localhost:4200/login', component: LoginComponent}
-];
+  { path: '', component: LoginComponent, pathMatch: 'full' },
+  { path: 'game', component: GameComponent },
+  { path: 'history', loadChildren: './history/history.module#HistoryModule' },
+  { path: 'error', component: ErrorComponent }
+  ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

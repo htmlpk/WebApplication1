@@ -1,18 +1,18 @@
 ﻿using BlackJack.BusinessLogicLayer;
 using BlackJack.DataAccessLayer.Entities;
 using BlackJack.UI.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlackJack.UI.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    [AllowAnonymous]
+    public class AccountController : BaseController
     {
         private readonly AppSettings _appSettings;
         private UserManager<User> _userManager;
@@ -30,30 +30,15 @@ namespace BlackJack.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserNames()
         {
-            try
-            {
-                var userNames = _userManager.Users.Where(x => !x.Email.Contains("Bot")).Select(y => y.Email);
-                return Ok(userNames);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(RequestTypes.Error);
-            }
+            var userNames = _userManager.Users.Where(x => !x.Email.Contains("Bot")).Select(y => y.Email);
+            return Ok(userNames);
         }
-
         [HttpGet("{username}")]
         public async Task<IActionResult> LogIn(string userName)
         {
-            try
-            {
-                var loginService = new LoginHelper(_userManager, _signInManager);
-                var token = await loginService.Login(userName);
-                return Ok(token);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(RequestTypes.LoginError);
-            }
+            var loginHelper = new LoginHelper(_userManager, _signInManager);
+            var token = await loginHelper.Login(userName);
+            return Ok(token);
         }
     }
 }

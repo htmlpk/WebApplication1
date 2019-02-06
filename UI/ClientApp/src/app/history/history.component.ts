@@ -1,12 +1,10 @@
-import { environment } from 'src/environments/environment.local';
-import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Game } from 'src/app/shared/classes/Game';
-import { IMatch } from 'src/app/shared/interfaces/IMatch';
-import { HistoryService } from 'src/app/shared/services/shared.historyservice';
-import { DOCUMENT } from '@angular/common';
-import { Guid } from "guid-typescript";
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Guid } from "guid-typescript";
+import { Game } from 'src/app/shared/models/game.model';
+import { Match } from 'src/app/shared/models/match.model';
+import { HistoryService } from 'src/app/shared/services/history.service';
 
 @Component({
   selector: 'history',
@@ -16,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class HistoryComponent {
   matches: Game[];
-  currentMatch: IMatch = {
+  currentMatch: Match = {
     game: {
       id: Guid.create(),
       countOfRounds: 0,
@@ -32,19 +30,19 @@ export class HistoryComponent {
   }
 
   getHistory(): void {
-    this.historyService.gethistory(this.http, "").subscribe(result => {
+    this.historyService.gethistory().subscribe(result => {
       this.matches = result
     });
   }
 
-  getGameDetails(id: Guid): void {
-    this.historyService.getGameDetails(this.http, id).subscribe(result => {
+  getGameDetails(matchId: Guid): void {
+    this.historyService.getGameDetails(matchId).subscribe(result => {
       this.currentMatch = result
       console.log(result);
     });
   }
 
-  closeDetails(id: Guid): void {
+  closeDetails(): void {
     this.currentMatch = {
       game: {
         id: Guid.create(),
@@ -61,4 +59,3 @@ export class HistoryComponent {
     this.router.navigate(['/']);
   }
 }
-

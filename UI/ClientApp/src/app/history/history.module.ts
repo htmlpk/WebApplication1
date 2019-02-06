@@ -1,7 +1,7 @@
-import { HistoryComponent } from './history.component';
 import { CommonModule } from '@angular/common';
-import { NgModule, InjectionToken } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HistoryComponent } from './history.component';
 
 const routes: Routes = [
     { path: '', component: HistoryComponent }
@@ -17,5 +17,3 @@ const routes: Routes = [
     ]
 })
 export class HistoryModule { }
-
-

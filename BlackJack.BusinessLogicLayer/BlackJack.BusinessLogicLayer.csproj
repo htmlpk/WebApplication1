@@ -17,4 +17,10 @@
     <ProjectReference Include="..\BlackJack.ViewModels\BlackJack.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

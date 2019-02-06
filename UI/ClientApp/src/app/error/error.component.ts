@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { GameService } from 'src/app/shared/services/shared.gameservice';
+import { GameService } from 'src/app/shared/services/game.service';
 
 @Component({
   selector: 'error',
@@ -16,16 +16,4 @@ export class ErrorComponent implements OnInit {
   ngOnInit():void {
     this.errormessage = localStorage.getItem('error');
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-

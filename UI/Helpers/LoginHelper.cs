@@ -1,4 +1,5 @@
-﻿using BlackJack.DataAccessLayer.Entities;
+﻿using BlackJack.BusinessLogicLayer.Exceptions;
+using BlackJack.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -28,19 +29,15 @@ namespace BlackJack.UI.Helpers
             var result = await _userManager.CreateAsync(user, userName);
             if (result.Succeeded)
             {
-                try
-                {
-                    await _signInManager.SignInAsync(user, false);
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
+                await _signInManager.SignInAsync(user, false);
+                return;
             }
+            throw new LoginException("Can not login now. Try Later!");
         }
 
         public async Task<string> Login(string userName)
         {
+
             var result = await _signInManager.PasswordSignInAsync(userName, userName, false, false);
             if (!result.Succeeded)
             {
