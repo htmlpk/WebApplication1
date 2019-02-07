@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.BusinessLogicLayer.Services
 {
-    class HistoryService : IHistoryService
+    public class HistoryService : IHistoryService
     {
         private IMapper _mapper;
         private IGameRepository _gameRepository;

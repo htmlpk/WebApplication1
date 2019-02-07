@@ -7,7 +7,7 @@ namespace BlackJack.DataAccessLayer.Repository
 {
     public interface IUserRepository : IBaseRepository<UserInGame>
     {
-        Task<IEnumerable<string>> GetBotsIds();
+        Task<List<User>> GetBots();
         Task<string> GetUserId(string userName);
         Task<IEnumerable<UserInGame>> FindByGameId(Guid id);
     }

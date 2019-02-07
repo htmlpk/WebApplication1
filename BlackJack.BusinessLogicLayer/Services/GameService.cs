@@ -51,25 +51,26 @@ namespace BlackJack.BusinessLogicLayer.Services
 
         public async Task<MatchViewModel> NextRound(string userName, bool isUserNeedCard)
         {
-            var lastMatch = await GetLastMatchForNextRound(userName);
-            var raunds = await _cardRepository.FindByGameId(lastMatch.Game.Id);
+            var game = await _gameRepository.GetLastGame(userName);
+            var gamers = await _userRepository.FindByGameId(game.Id);
+            var raunds = await _cardRepository.FindByGameId(game.Id);
             var cardsToAdd = new List<GameRound>();
             UserInGame user = null;
             List<Card> usedCards = MapRaundToCard(raunds);
             List<UserInGame> usersToUpdatePoints = new List<UserInGame>();
-            foreach (var gamer in lastMatch.Gamers)
+            foreach (var gamer in gamers)
             {
                 if ((gamer.Name.Contains(BotNamePart)) && (!gamer.IsFinished))
                 {
                     var newCard = DealCardFromDeck(ref usedCards);
                     var newRaund = new GameRound()
                     {
-                        GameId = lastMatch.Game.Id,
+                        GameId = game.Id,
                         Points = newCard.Points,
                         Suit = newCard.Suit,
                         Value = newCard.Value,
                         UserInGameId = gamer.Id,
-                        RoundNumber = lastMatch.Game.CountOfRounds + 1
+                        RoundNumber = game.CountOfRounds + 1
                     };
                     cardsToAdd.Add(newRaund);
                     usersToUpdatePoints.Add(_mapper.Map(gamer,new UserInGame()));
@@ -79,13 +80,13 @@ namespace BlackJack.BusinessLogicLayer.Services
                     var newCard = DealCardFromDeck(ref usedCards);
                     var newRaund = new GameRound()
                     {
-                        GameId = lastMatch.Game.Id,
+                        GameId = game.Id,
                         Id = Guid.NewGuid(),
                         Points = newCard.Points,
                         Suit = newCard.Suit,
                         Value = newCard.Value,
                         UserInGameId = gamer.Id,
-                        RoundNumber = lastMatch.Game.CountOfRounds + 1
+                        RoundNumber = game.CountOfRounds + 1
                     };
                     cardsToAdd.Add(newRaund);
                     usersToUpdatePoints.Add(_mapper.Map(gamer, new UserInGame()));
@@ -106,24 +107,15 @@ namespace BlackJack.BusinessLogicLayer.Services
             }
 
             await _cardRepository.Add(cardsToAdd);
-            await UpdateUsersPoints(usersToUpdatePoints,lastMatch.Game.Id);
+            await UpdateUsersPoints(usersToUpdatePoints, game.Id);
             await UpdateGameStatus(userName);
             await UpdateUsersStatus(userName);
 
-            if (!isUserNeedCard && lastMatch.Game.Status != GameStatus.Finished)
+            if (!isUserNeedCard && game.Status != GameStatus.Finished)
             {
                 await NextRound(userName, false);
             }
             return await GetLastMatch(userName);
-        }
-
-        private async Task<MatchForHandlingViewModel> GetLastMatchForNextRound(string userName)
-        {
-            var game = await _gameRepository.GetLastGame(userName);
-            var gamers = await _userRepository.FindByGameId(game.Id);
-            var cards = await _cardRepository.FindByGameId(game.Id);
-            var match = new MatchForHandlingViewModel() { Game = game, Gamers = gamers, Rounds = cards };
-            return match;
         }
 
         private async Task<Guid> CreateGame()
@@ -138,19 +130,20 @@ namespace BlackJack.BusinessLogicLayer.Services
             List<UserInGame> gamers = new List<UserInGame>();
             List<GameRound> cards = new List<GameRound>();
             string userId = await _userRepository.GetUserId(userName);
-            List<string> botsIds = (await _userRepository.GetBotsIds()).ToList();
-            if (botsIds==null||botsIds.Count==0)
+            List<User> bots = (await _userRepository.GetBots()).ToList();
+            if (bots==null||bots.Count==0)
             {
-                throw new Exception("List of bots ids is empty");
+                throw new Exception("List of bots is empty");
             }
             gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false,
                 GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
             gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotDealerNamePart, IsDealer = true, IsFinished = false,
-                GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds.LastOrDefault() });
-            for (var i = 1; i < countOfBots; i++)
+                GamerStatus = GamerStatus.InGame, Points = 0, UserId = bots.LastOrDefault().Id });
+            for (var i = 0; i < countOfBots; i++)
             {
-                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotNamePart + i, IsDealer = false, IsFinished = false,
-                    GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i-1] });
+                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = bots[i].Email, IsDealer = false, IsFinished = false,
+                    GamerStatus = GamerStatus.InGame, Points = 0, UserId = bots[i].Id
+                });
             }
             await _userRepository.Add(gamers);
             return gamers;
