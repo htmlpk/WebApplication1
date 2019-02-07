@@ -58,4 +58,17 @@ export class HistoryComponent {
   redirectToMain() {
     this.router.navigate(['/']);
   }
+
+  public isItCurrentGame(gameId: Guid, currentMatch: Guid): boolean {
+    if (gameId === currentMatch) {
+      return true;
+    }
+    return false;
+  }
+  public isItRoundOfThisGame(roundGameId: Guid, gameId: Guid): boolean {
+    if (roundGameId === gameId) {
+      return true;
+    }
+    return false;
+  }
 }

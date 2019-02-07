@@ -117,12 +117,12 @@ namespace BlackJack.BusinessLogicLayer.Services
             return await GetLastMatch(userName);
         }
 
-        private async Task<Match> GetLastMatchForNextRound(string userName)
+        private async Task<MatchForHandlingViewModel> GetLastMatchForNextRound(string userName)
         {
             var game = await _gameRepository.GetLastGame(userName);
             var gamers = await _userRepository.FindByGameId(game.Id);
             var cards = await _cardRepository.FindByGameId(game.Id);
-            var match = new Match() { Game = game, Gamers = gamers, Rounds = cards };
+            var match = new MatchForHandlingViewModel() { Game = game, Gamers = gamers, Rounds = cards };
             return match;
         }
 
@@ -143,11 +143,14 @@ namespace BlackJack.BusinessLogicLayer.Services
             {
                 throw new Exception("List of bots ids is empty");
             }
-            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
-            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotDealerNamePart, IsDealer = true, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[botsIds.Count-1] });
-            for (var i = 0; i < countOfBots-1; i++)
+            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = userName, IsDealer = false, IsFinished = false,
+                GamerStatus = GamerStatus.InGame, Points = 0, UserId = userId });
+            gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotDealerNamePart, IsDealer = true, IsFinished = false,
+                GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds.LastOrDefault() });
+            for (var i = 1; i < countOfBots; i++)
             {
-                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotNamePart + (i+1), IsDealer = false, IsFinished = false, GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i] });
+                gamers.Add(new UserInGame() { GameId = newGameGuid, Name = BotNamePart + i, IsDealer = false, IsFinished = false,
+                    GamerStatus = GamerStatus.InGame, Points = 0, UserId = botsIds[i-1] });
             }
             await _userRepository.Add(gamers);
             return gamers;

@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class GameService {
   constructor(private http: HttpClient) {
   }
-  private gameApiUrl = environment.gameApiUrl;
+  private gameApiUrl = '/api/Game/';
   private apiUrl = environment.apiUrl;
 
   public getGame(): Observable<Match> {

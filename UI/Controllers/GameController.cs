@@ -22,43 +22,22 @@ namespace BlackJack.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> StartGame([FromBody]StartGameViewModel model)
         {
-            try
-            {
                 await _gameService.StartGame(model);
                 return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(BadRequestTypes.Error);
-            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetLastMatch()
         {
-            try
-            {
                 var lastMatch =  await _gameService.GetLastMatch(User.Identity.Name);
                 return Ok(lastMatch);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(BadRequestTypes.Error);
-            }
         }
 
         [HttpPut]
         public async Task<IActionResult> NextRound([FromBody] bool isCardNeed)
         {
-            try
-            {
                 var result = await _gameService.NextRound(User.Identity.Name, isCardNeed);
                 return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(BadRequestTypes.Error);
-            }
         }
     }
 }

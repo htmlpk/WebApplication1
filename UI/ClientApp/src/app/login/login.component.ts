@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { LoginService } from 'src/app/shared/services/login.service';
 import { Router } from '@angular/router';
 
@@ -10,11 +9,11 @@ import { Router } from '@angular/router';
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-  countofbots: string = '1';
+  countOfBots: string = '1';
   users: string[];
-  username: string;
+  userName: string;
   token: string;
-  constructor(private http: HttpClient, private router: Router, private loginservice: LoginService) {
+  constructor(private router: Router, private loginService: LoginService) {
   }
 
   ngOnInit() {
@@ -22,28 +21,30 @@ export class LoginComponent implements OnInit {
   }
 
   public getUsersName(): void {
-    this.loginservice.getUsersName().subscribe(result => {
+    this.loginService.getUsersName().subscribe(result => {
       this.users = result;
     })
   }
 
   public login(): void {
-    this.loginservice.login(this.username).subscribe(result => {
+    this.loginService.login(this.userName).subscribe(result => {
       localStorage.setItem('token', JSON.stringify(result));
     })
   }
 
   public startGame(): void {
-    this.loginservice.login(this.username).subscribe(result => {
+    this.loginService.login(this.userName).subscribe(result => {
       localStorage.setItem('token', JSON.stringify(result));
-      this.loginservice.startGame(this.username, this.countofbots).subscribe(result => {
+      this.loginService.startGame(this.userName, this.countOfBots).subscribe(result => {
         this.router.navigate(['/game'])
       });
     });
   }
 
   public watchHistory(): void {
-    this.login();
-    this.router.navigate(['/history']);
+    this.loginService.login(this.userName).subscribe(result => {
+      localStorage.setItem('token', JSON.stringify(result));
+      this.router.navigate(['/history']);
+    })
   }
 }

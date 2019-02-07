@@ -1,9 +1,9 @@
 ﻿using BlackJack.DataAccessLayer.Entities;
 using System.Collections.Generic;
 
-namespace BlackJack.BusinessLogicLayer
+namespace BlackJack.ViewModels
 {
-    public class Match
+    public class MatchForHandlingViewModel
     {
         public Game Game { get; set; }
         public IEnumerable<UserInGame> Gamers { get; set; }

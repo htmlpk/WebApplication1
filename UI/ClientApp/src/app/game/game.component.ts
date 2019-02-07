@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Match } from 'src/app/shared/models/match.model';
 import { GameService } from 'src/app/shared/services/game.service';
 import { Router } from '@angular/router';
+import { GameStatus } from 'src/app/shared/enums/game-status.enum';
+import { GamerStatus } from 'src/app/shared/enums/gamer-status.emun';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'game',
@@ -13,18 +16,8 @@ import { Router } from '@angular/router';
 })
 export class GameComponent implements OnInit {
 
-  match: Match = {
-    game: {
-      id: null,
-      countOfRounds: 0,
-      status: 0,
-      date: new Date(),
-    },
-    rounds: [],
-    gamers: [],
-  };
+  match: Match;
   cardUrl: string = environment.imageUrl;
-  username: string = "q";
 
   constructor(private http: HttpClient, private gameService: GameService, private router: Router) {
   }
@@ -33,21 +26,66 @@ export class GameComponent implements OnInit {
     this.getGame();
   }
 
-  getGame(): void {
+  public getGame(): void {
     this.gameService.getGame().subscribe(result => {
+      console.log(result);
       this.match = result;
     });
   }
 
-  nextRound(): void {
+  public nextRound(): void {
     this.gameService.nextRound().subscribe(result => {
+      console.log(result);
       this.match = result;
     });
   }
 
-  stopGame(): void {
+  public stopGame(): void {
     this.gameService.stopGame().subscribe(result => {
+      console.log(result);
       this.match = result;
     });
+  }
+
+  public isGameFinished(): boolean {
+    if (this.match.game.status == GameStatus.Finished) {
+      return true;
+    }
+    return false;
+  }
+
+  public isGamerBot(gamerName: string): boolean {
+    if (gamerName.indexOf('Bot') != 0) {
+      return false;
+    }
+    return true;
+  }
+
+  public isGamerLoser(gamerStatus: GamerStatus): boolean {
+    if (gamerStatus == GamerStatus.Loser) {
+      return true;
+    }
+    return false;
+  }
+
+  public isGamerWinner(gamerStatus: GamerStatus): boolean {
+    if (gamerStatus == GamerStatus.Winner) {
+      return true;
+    }
+    return false;
+  }
+
+  public isGamerStillPlay(gamerStatus: GamerStatus): boolean {
+    if (gamerStatus == GamerStatus.InGame) {
+      return true;
+    }
+    return false;
+  }
+
+  public isCardHolder(userInGameId: Guid, gamerid: Guid): boolean {
+    if (userInGameId == gamerid) {
+      return true;
+    }
+    return false;
   }
 }

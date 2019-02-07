@@ -8,22 +8,22 @@ import { Injectable } from '@angular/core';
 export class LoginService {
   constructor(private http: HttpClient) {
   }
-  private accountApiUrl = environment.accountApiUrl;
-  private gameApiUrl = environment.gameApiUrl;
   private apiUrl = environment.apiUrl;
+  private accountApiUrl = '/api/Account/';
+  private gameApiUrl = '/api/Game/';
 
   public getUsersName(): Observable<string[]> {
     return this.http.get<string[]>(this.apiUrl + this.accountApiUrl + 'GetUserNames');
   };
 
-  public login(username: string): Observable<any> {
-    return this.http.get(this.apiUrl + this.accountApiUrl + 'LogIn/' + username);
+  public login(userName: string): Observable<any> {
+    return this.http.get(this.apiUrl + this.accountApiUrl + 'LogIn/' + userName);
   };
 
-  public startGame(username: string,countofbots:string): Observable<any> {
+  public startGame(userName: string,countOfBots:string): Observable<any> {
     let model = new StartGameModel();
-    model.userName = username;
-    model.countOfBots = parseInt(countofbots);
+    model.userName = userName;
+    model.countOfBots = parseInt(countOfBots);
     return this.http.post(this.apiUrl + this.gameApiUrl + 'StartGame/', model);
   }
 }

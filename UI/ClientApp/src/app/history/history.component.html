@@ -3,7 +3,7 @@
         <div>
             || Date of game - {{match.date | date:'yyyy-MM-dd'}}, time - {{match.date | date:'hh:mm'}} ||
             <button (click)="getGameDetails(match.id)">Get info</button>
-            <div *ngIf="match.id === currentMatch.game.id">
+            <div *ngIf="isItCurrentGame(match.id,currentMatch.game.id)">
                 <button (click)="closeDetails()">Hide info</button>
                 <div>
                     <div style="border:1px black">
@@ -12,7 +12,7 @@
                         Name - {{gamer.name}}<br>
                         Gamer status - {{gamer.gamerStatus}}<br>
                         <div *ngFor="let round of currentMatch.rounds">
-                            <div *ngIf="round.userInGameId==gamer.id">
+                            <div *ngIf="isItRoundOfThisGame(round.userInGameId,gamer.id)">
                                 <img src="../../assets/{{round.suit}}-{{round.value}}.png">
                                 Received in round {{round.roundNumber+1}}
                             </div>

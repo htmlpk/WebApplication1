@@ -19,12 +19,11 @@ namespace BlackJack.UI.Controllers
         private SignInManager<User> _signInManager;
         private IGameService _gameService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGameService gameService, IOptions<AppSettings> appSettings)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGameService gameService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _gameService = gameService;
-            _appSettings = appSettings.Value;
         }
 
         [HttpGet]
