@@ -47,4 +47,14 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/history']);
     })
   }
+
+  buttonState() {
+    if (this.userName){
+      console.log(this.userName)
+      let val = this.userName.match(/.*Bot.*/);
+      console.log(val)
+      return (this.userName== '' || val) ? true : false;
+    }
+    return
+  }
 }

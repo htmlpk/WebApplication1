@@ -1,19 +1,20 @@
 <h2>Enter the name and choose the count of bots to start the game! </h2>
-<input [(ngModel)]="username"  list="usernames" #name="ngModel" required>
+<input [(ngModel)]="userName" class="nameInput" list="usernames" #name="ngModel" required>
 <datalist id="usernames">
-    <option *ngFor="let user of users" [ngValue]="user.userName">{{user}}</option>
+  <option *ngFor="let user of users" [ngValue]="user.userName">{{user}}</option>
 </datalist>
 <div [hidden]="name.valid || name.untouched " class="alert alert-danger">
   Enter the name
-</div><br><br>  
-<select [(ngModel)]="countofbots"  required>
-    <option >1</option>
-    <option >2</option>
-    <option >3</option>
-    <option >4</option>
-    <option >5</option>
+</div><br><br>
+<select [(ngModel)]="countofbots" required>
+  <option>1</option>
+  <option>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option>5</option>
 </select>
 <h2>
-  <button [disabled]="name.invalid" (click)="startGame()">Start game</button>
-  <button [disabled]="name.invalid" (click)="watchHistory()">Watch game history</button>
+  <button [disabled]="buttonState()" (click)="startGame()">Start game</button>
+  <button [disabled]="buttonState()" (click)="watchHistory()">Watch game history</button>
 </h2>
+
