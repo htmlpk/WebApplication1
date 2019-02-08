@@ -20,11 +20,13 @@ namespace BlackJack.DataAccessLayer.Repository
             return id;
         }
 
-        public async Task<List<User>> GetBots()
+        public async Task<(List<User> bots,User dealer)> GetBotsAndDealer(int countOfBots)
         {
-            var botssql = "Select * from AspNetUsers where Email LIKE 'Bot%' Order By Email;";
-            var bots = await Connection.QueryAsync<User>(botssql);
-            return bots.AsList();
+            var botssql = "Select TOP(@countofbots) * from AspNetUsers where Email LIKE 'Bot%' and Email NOT LIKE 'BotDealer' Order By Email ";
+            var bots = await Connection.QueryAsync<User>(botssql, new { countofbots = countOfBots-1 });
+            var dealersql = "Select * from AspNetUsers where Email LIKE 'BotDealer'";
+            var dealer = await Connection.QueryFirstOrDefaultAsync<User>(dealersql);
+            return (bots.AsList(),dealer);
         }
 
         public virtual async Task<IEnumerable<UserInGame>> FindByGameId(Guid id)

@@ -67,7 +67,7 @@ namespace UI
 
             // [Entity Framework <=> Dapper] 
             BlackJack.BusinessLogicLayer.Startup.InjectServices(services, connectionString);
-            BlackJack.DataAccessLayer.Startup.SetDapper(services, connectionString);
+            BlackJack.DataAccessLayer.Startup.SetEntityFramework(services, connectionString);
             services.Configure<IdentityOptions>(options =>
             {                
                 options.Password.RequireDigit = false;

@@ -124,15 +124,7 @@ namespace BlackJack.BusinessLogicLayer.Services
         {
             List<UserInGame> gamers = new List<UserInGame>();
             string userId = await _userRepository.GetUserId(userName);
-            List<User> bots = (await _userRepository.GetBots()).ToList();
-            if (bots == null || bots.Count == 0)
-            {
-                throw new Exception("List of bots is empty");
-            }
-            if (userId == null)
-            {
-                throw new Exception("User`s id was incorrect!");
-            }
+            var botsAndDealer = await _userRepository.GetBotsAndDealer(countOfBots);
             gamers.Add(new UserInGame()
             {
                 GameId = newGameGuid,
@@ -143,10 +135,6 @@ namespace BlackJack.BusinessLogicLayer.Services
                 Points = 0,
                 UserId = userId
             });
-            if (bots.LastOrDefault().Id == null)
-            {
-                throw new Exception("Bot`s id was incorrect!");
-            }
             gamers.Add(new UserInGame()
             {
                 GameId = newGameGuid,
@@ -155,26 +143,19 @@ namespace BlackJack.BusinessLogicLayer.Services
                 IsFinished = false,
                 GamerStatus = GamerStatus.InGame,
                 Points = 0,
-                UserId = bots.LastOrDefault().Id
+                UserId = botsAndDealer.dealer?.Id
             });
-            var countOfBotsWithoutDealer = countOfBots - 1;
-            bots = bots.Take(countOfBotsWithoutDealer).ToList();
-
-            foreach (var bot in bots)
+            foreach (var bot in botsAndDealer.bots)
             {
-                if (bot.Email == null|| bot.Id==null)
-                {
-                    throw new Exception("Bot`s data was incorrect!");
-                }
                 gamers.Add(new UserInGame()
                 {
                     GameId = newGameGuid,
-                    Name = bot.Email,
+                    Name = bot?.Email,
                     IsDealer = false,
                     IsFinished = false,
                     GamerStatus = GamerStatus.InGame,
                     Points = 0,
-                    UserId = bot.Id
+                    UserId = bot?.Id
                 });
             }
             await _userRepository.Add(gamers);

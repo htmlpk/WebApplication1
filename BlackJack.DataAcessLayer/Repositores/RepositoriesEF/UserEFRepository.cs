@@ -26,10 +26,12 @@ namespace BlackJack.DataAccessLayer.Repository
             return userIds;
         }
 
-        public async Task<List<User>> GetBots()
+        public async Task<(List<User> bots, User dealer)> GetBotsAndDealer(int countOfBots)
         {
-            var botsIds = await _database.Users.Where(x => x.Email.Contains("Bot")).OrderBy(y=>y.Email).ToListAsync();
-            return botsIds;
+            var botsWithDealer = await _database.Users.Where(x => x.Email.Contains("Bot")).OrderBy(y=>y.Email).ToListAsync();
+            var bots = botsWithDealer.Take(countOfBots-1).ToList();
+            var dealer = botsWithDealer.LastOrDefault();
+            return (bots, dealer);
         }
 
         public virtual async Task<IEnumerable<UserInGame>> FindByGameId(Guid id)
