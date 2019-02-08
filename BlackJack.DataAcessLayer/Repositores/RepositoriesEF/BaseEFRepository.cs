@@ -37,6 +37,5 @@ namespace BlackJack.DataAccessLayer.Repository
             _database.Set<T>().UpdateRange(entities);
             await _database.SaveChangesAsync();
         }
-       
     }
 }

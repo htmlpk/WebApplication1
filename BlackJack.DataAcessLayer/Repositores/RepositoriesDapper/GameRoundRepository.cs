@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public class GameRoundRepository : BaseRepository<GameRound>, ICardRepository
+    public class GameRoundRepository : BaseRepository<GameRound>, IRoundRepository
     {
         public GameRoundRepository(string connectionString)
             : base("GameRounds", connectionString)

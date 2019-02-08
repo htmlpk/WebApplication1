@@ -13,9 +13,9 @@ namespace BlackJack.BusinessLogicLayer.Services
         private IMapper _mapper;
         private IGameRepository _gameRepository;
         private IUserRepository _userRepository;
-        private ICardRepository _cardRepository;
+        private IRoundRepository _cardRepository;
 
-        public HistoryService(IGameRepository gameRepository, IUserRepository userRepository, ICardRepository cardRepository, IMapper mapper)
+        public HistoryService(IGameRepository gameRepository, IUserRepository userRepository, IRoundRepository cardRepository, IMapper mapper)
         {
             _gameRepository = gameRepository;
             _userRepository = userRepository;

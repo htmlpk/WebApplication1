@@ -4,7 +4,6 @@ using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +13,6 @@ namespace BlackJack.UI.Controllers
     [AllowAnonymous]
     public class AccountController : BaseController
     {
-        private readonly AppSettings _appSettings;
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private IGameService _gameService;

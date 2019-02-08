@@ -3,7 +3,6 @@ using BlackJack.BusinessLogicLayer;
 using BlackJack.DataAccessLayer.Context;
 using BlackJack.DataAccessLayer.Entities;
 using BlackJack.UI;
-using BlackJack.UI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace UI
 {
@@ -39,9 +37,6 @@ namespace UI
         .AddDefaultTokenProviders();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(options=>
             {

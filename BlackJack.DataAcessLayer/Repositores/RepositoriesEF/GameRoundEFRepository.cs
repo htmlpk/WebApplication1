@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public class GameRoundEFRepository : BaseEFRepository<GameRound>, ICardRepository
+    public class GameRoundEFRepository : BaseEFRepository<GameRound>, IRoundRepository
     {
         public GameRoundEFRepository(ApplicationDbContext database)
             :base(database)

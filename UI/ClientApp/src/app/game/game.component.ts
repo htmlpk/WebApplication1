@@ -5,7 +5,7 @@ import { Match } from 'src/app/shared/models/match.model';
 import { GameService } from 'src/app/shared/services/game.service';
 import { Router } from '@angular/router';
 import { GameStatus } from 'src/app/shared/enums/game-status.enum';
-import { GamerStatus } from 'src/app/shared/enums/gamer-status.emun';
+import { GamerStatus } from 'src/app/shared/enums/gamer-status.enum';
 import { Guid } from 'guid-typescript';
 
 @Component({

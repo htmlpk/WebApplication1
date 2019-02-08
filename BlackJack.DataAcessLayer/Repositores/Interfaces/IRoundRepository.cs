@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAccessLayer.Repository
 {
-    public interface ICardRepository : IBaseRepository<GameRound>
+    public interface IRoundRepository : IBaseRepository<GameRound>
     {
         Task<IEnumerable<GameRound>> FindByGameId(Guid id);
         Task<IEnumerable<GameRound>> FindByUserId(Guid id);

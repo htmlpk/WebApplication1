@@ -1,9 +1,7 @@
 ﻿using BlackJack.BusinessLogicLayer;
-using BlackJack.UI.Helpers;
 using BlackJack.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace BlackJack.UI.Controllers
@@ -15,7 +13,7 @@ namespace BlackJack.UI.Controllers
         private IGameService _gameService;
 
         public GameController(IGameService gameService)
-        {
+        {  
             _gameService = gameService;
         }
 

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-  countOfBots: string = '1';
+  countOfBots: string;
   users: string[];
   userName: string;
   token: string;
@@ -49,12 +49,10 @@ export class LoginComponent implements OnInit {
   }
 
   buttonState() {
-    if (this.userName){
-      console.log(this.userName)
+    if (this.userName) {
       let val = this.userName.match(/.*Bot.*/);
-      console.log(val)
-      return (this.userName== '' || val) ? true : false;
+      return (this.userName == null || this.userName == '' || val || this.countOfBots == null) ? true : false;
     }
-    return
+    return true;
   }
 }
